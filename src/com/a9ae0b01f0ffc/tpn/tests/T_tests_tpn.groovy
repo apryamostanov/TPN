@@ -2,6 +2,8 @@ package com.a9ae0b01f0ffc.tpn.tests
 
 import com.a9ae0b01f0ffc.tpn.implementation.T_tpn
 import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_soap_message_body
+import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_thread
+import com.a9ae0b01f0ffc.tpn.main.T_main
 import com.a9ae0b01f0ffc.tpn.main.T_tpn_s
 import org.junit.Test
 
@@ -117,6 +119,11 @@ class T_tests_tpn {
                 "   </soap:Body>\n" +
                 "</soap:Envelope>"
         new T_tpn().send_soap(new T_tpn_soap_message_body(l_output_data))
+    }
+
+    @Test
+    void test_002() {
+        T_main.main(PC_CONF_FILE_NAME)
     }
 
 }

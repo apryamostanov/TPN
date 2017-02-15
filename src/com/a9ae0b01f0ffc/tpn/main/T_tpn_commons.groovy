@@ -14,6 +14,7 @@ class T_tpn_commons extends T_common_commons{
     String GC_CONTENT_TYPE = "application/soap+xml;charset=UTF-8;action=&quot;http://tempuri.org/IWDNotifyService/TranHistNotificationRequest&quot;"
     String GC_HOST_NAME = "localhost"
     String GC_UNSERCURE_TEST_TLS_SSL_MODE = "false"
+    String GC_POLL_INTERVAL_MILLISECONDS = 2000
 
     T_tpn_commons(String i_conf_file_name) {
         super(i_conf_file_name)
@@ -26,6 +27,7 @@ class T_tpn_commons extends T_common_commons{
         GC_CONTENT_TYPE = GC_CONST_CONF.GC_CONTENT_TYPE(GC_CONTENT_TYPE)
         GC_HOST_NAME = GC_CONST_CONF.GC_HOST_NAME(GC_HOST_NAME)
         GC_UNSERCURE_TEST_TLS_SSL_MODE = GC_CONST_CONF.GC_UNSERCURE_TEST_TLS_SSL_MODE(GC_UNSERCURE_TEST_TLS_SSL_MODE)
+        GC_POLL_INTERVAL_MILLISECONDS = GC_CONST_CONF.GC_POLL_INTERVAL_MILLISECONDS(GC_POLL_INTERVAL_MILLISECONDS)
     }
 
 }

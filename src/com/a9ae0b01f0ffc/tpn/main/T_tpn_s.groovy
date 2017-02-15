@@ -1,5 +1,6 @@
 package com.a9ae0b01f0ffc.tpn.main
 
+import com.a9ae0b01f0ffc.black_box.annotations.I_black_box
 import com.a9ae0b01f0ffc.commons.static_string.T_static_string_builder
 
 class T_tpn_s {

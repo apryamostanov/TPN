@@ -25,7 +25,7 @@ class T_tpn {
     static final String PC_HEADER_NAME_ACCEPT_LANGUAGE = "Accept-Language"
     static final String PC_HEADER_NAME_ACCEPT_CONTENT_TYPE = "Content-Type"
 
-    @I_black_box("error")
+    @I_black_box
     void validate_tpn_soap_message_body(T_tpn_soap_message_body i_tpn_soap_message_body) {
         try {
             String l_serialized_xml = XmlUtil.serialize(i_tpn_soap_message_body.get_xml_string())
