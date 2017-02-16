@@ -28,7 +28,7 @@ class T_tpn_sender {
             l_formatted_payload = l_string_writer.toString()
             return T_tpn_const.GC_TRUE
         } catch (Exception e_others) {
-            T_s.l().log_warning(T_s.s().Potentially_invalid_XML, T_s.r(i_xml, "problematic_payload"))
+            T_s.l().log_warning(T_s.s().Potentially_invalid_XML, T_s.r(i_xml, "problematic_payload"), e_others)
             return T_tpn_const.GC_FALSE
         }
     }
