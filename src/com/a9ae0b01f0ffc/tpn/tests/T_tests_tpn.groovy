@@ -1,8 +1,8 @@
 package com.a9ae0b01f0ffc.tpn.tests
 
-import com.a9ae0b01f0ffc.tpn.implementation.T_tpn
-import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_soap_message_body
-import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_thread
+import com.a9ae0b01f0ffc.black_box.main.T_s
+import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_sender
+import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_soap_message
 import com.a9ae0b01f0ffc.tpn.main.T_main
 import com.a9ae0b01f0ffc.tpn.main.T_tpn_s
 import org.junit.Test
@@ -14,6 +14,7 @@ class T_tests_tpn {
     @Test
     void test_001() {
         T_tpn_s.x().init_custom(PC_CONF_FILE_NAME)
+        System.out.println(T_s.c().GC_MESSAGE_FORMAT_TOKEN_TRACE)
         String l_output_data = "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:tem=\"http://tempuri.org/\" xmlns:wdn=\"http://schemas.datacontract.org/2004/07/WDNotifyServices.DTO\">\n" +
                 "   <soap:Header/>\n" +
                 "   <soap:Body>\n" +
@@ -118,7 +119,7 @@ class T_tests_tpn {
                 "      </tem:TranHistNotification>\n" +
                 "   </soap:Body>\n" +
                 "</soap:Envelope>"
-        new T_tpn().send_soap(new T_tpn_soap_message_body(l_output_data))
+        new T_tpn_sender().send_soap(new T_tpn_soap_message(l_output_data))
     }
 
     @Test
