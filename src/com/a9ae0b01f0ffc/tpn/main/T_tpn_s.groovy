@@ -17,4 +17,6 @@ class T_tpn_s {
         return T_tpn_const.GC_STATIC_STRING_BUILDER
     }
 
+
+
 }

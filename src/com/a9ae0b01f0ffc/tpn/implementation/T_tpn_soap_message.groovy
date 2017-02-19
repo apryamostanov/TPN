@@ -74,7 +74,7 @@ class T_tpn_soap_message extends T_object_with_guid {
     public String toString() {
         return "T_tpn_soap_message{" +
                 "p_trxn_id='" + p_trxn_id + '\'' +
-                ", p_source='" + p_source + '\'' +
+                ", p_channel_name='" + p_source + '\'' +
                 ", p_endpoint='" + p_endpoint + '\'' +
                 ", p_status='" + p_status + '\'' +
                 ", p_retry_count=" + p_retry_count +
