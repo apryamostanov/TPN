@@ -68,15 +68,20 @@ class T_tpn_sender {
         T_s.l().log_send(i_tpn_soap_message_body.get_payload())
         Integer l_response_code = l_https_url_connection.getResponseCode()
         InputStream l_input_stream = get_input_stream(l_https_url_connection)
-        BufferedReader l_buffered_reader = new BufferedReader(new InputStreamReader(l_input_stream))
-        String l_buffered_reader_line
-        StringBuffer l_response = new StringBuffer()
-        while ((l_buffered_reader_line = l_buffered_reader.readLine()) != T_tpn_const.GC_NULL_OBJ_REF) {
-            l_response.append(l_buffered_reader_line)
-        }
-        l_buffered_reader.close()
-        T_s.l().log_receive(l_response)
-        if (!validate_xml(l_response.toString())) {
+        if (l_input_stream != T_tpn_const.GC_NULL_OBJ_REF) {
+            BufferedReader l_buffered_reader = new BufferedReader(new InputStreamReader(l_input_stream))
+            String l_buffered_reader_line
+            StringBuffer l_response = new StringBuffer()
+            while ((l_buffered_reader_line = l_buffered_reader.readLine()) != T_tpn_const.GC_NULL_OBJ_REF) {
+                l_response.append(l_buffered_reader_line)
+            }
+            l_buffered_reader.close()
+            T_s.l().log_receive(l_response)
+            if (!validate_xml(l_response.toString())) {
+                return T_tpn_const.GC_RESPONSE_CODE_INVALID_RESPONSE
+            }
+        } else {
+            T_s.l().log_warning(T_s.s().Empty_response_received)
             return T_tpn_const.GC_RESPONSE_CODE_INVALID_RESPONSE
         }
         return l_response_code

@@ -22,6 +22,8 @@ class T_tpn_commons extends T_common_commons{
     String GC_MODE = "normal"
     String GC_MAX_RETRY_COUNT = 10
     String GC_POLL_LIMIT = "5"
+    String GC_DEFAULT_ENDPOINT
+    String GC_SAMPLE_FILE_NAME
 
     T_tpn_commons(String i_conf_file_name) {
         super(i_conf_file_name)
@@ -41,6 +43,8 @@ class T_tpn_commons extends T_common_commons{
         GC_MYSQL_DRIVER = GC_CONST_CONF.GC_MYSQL_DRIVER(GC_MYSQL_DRIVER)
         GC_MODE = GC_CONST_CONF.GC_MODE(GC_MODE)
         GC_POLL_LIMIT = GC_CONST_CONF.GC_POLL_LIMIT(GC_POLL_LIMIT)
+        GC_DEFAULT_ENDPOINT = GC_CONST_CONF.GC_DEFAULT_ENDPOINT(GC_DEFAULT_ENDPOINT)
+        GC_SAMPLE_FILE_NAME = GC_CONST_CONF.GC_SAMPLE_FILE_NAME(GC_SAMPLE_FILE_NAME)
     }
 
 }

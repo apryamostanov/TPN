@@ -11,15 +11,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Black-Box/out/artifacts/BlackBox/BlackBox.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../Commons/out/artifacts/Commons_jar/Commons.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -29,7 +20,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://E:/AP/WORK/UNCATEGORIZED/mysql-connector-java-5.1.40/mysql-connector-java-5.1.40/mysql-connector-java-5.1.40-bin.jar!/" />
+          <root url="jar://$MODULE_DIR$/../mighty_logger2_old/out/artifacts/BlackBox/BlackBox.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

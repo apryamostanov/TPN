@@ -29,6 +29,10 @@ class T_tpn_soap_message extends T_object_with_guid {
         this.p_tpn_internal_unique_id = i_tpn_internal_unique_id
     }
 
+    T_tpn_soap_message() {
+
+    }
+
     T_tpn_soap_message(String i_xml_string) {
         p_payload = i_xml_string
     }
@@ -51,6 +55,16 @@ class T_tpn_soap_message extends T_object_with_guid {
     @I_black_box("error")
     String get_endpoint() {
         return p_endpoint
+    }
+
+    @I_black_box("error")
+    void set_endpoint(String i_endpoint) {
+        p_endpoint = i_endpoint
+    }
+
+    @I_black_box("error")
+    void set_payload(String i_payload) {
+        p_payload = i_payload
     }
 
     @I_black_box("error")
