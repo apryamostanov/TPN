@@ -1,9 +1,9 @@
-package com.a9ae0b01f0ffc.tpn.main
+package com.a9ae0b01f0ffc.tpn.conf
 
-import com.a9ae0b01f0ffc.commons.main.T_common_commons
+import com.a9ae0b01f0ffc.commons.implementation.config.T_common_conf
 
 
-class T_tpn_commons extends T_common_commons{
+class T_tpn_conf extends T_common_conf{
 
     String GC_TPN_CLASSES_CONF
     String GC_BLACK_BOX_CONFIG
@@ -22,8 +22,9 @@ class T_tpn_commons extends T_common_commons{
     String GC_MODE = "normal"
     String GC_MAX_RETRY_COUNT = 10
     String GC_POLL_LIMIT = "5"
+    String GC_PAYLOAD_TYPE = "xml"
 
-    T_tpn_commons(String i_conf_file_name) {
+    T_tpn_conf(String i_conf_file_name) {
         super(i_conf_file_name)
         GC_TPN_CLASSES_CONF = GC_CONST_CONF.GC_TPN_CLASSES_CONF(GC_TPN_CLASSES_CONF)
         GC_BLACK_BOX_CONFIG = GC_CONST_CONF.GC_BLACK_BOX_CONFIG(GC_BLACK_BOX_CONFIG)
@@ -41,6 +42,7 @@ class T_tpn_commons extends T_common_commons{
         GC_MYSQL_DRIVER = GC_CONST_CONF.GC_MYSQL_DRIVER(GC_MYSQL_DRIVER)
         GC_MODE = GC_CONST_CONF.GC_MODE(GC_MODE)
         GC_POLL_LIMIT = GC_CONST_CONF.GC_POLL_LIMIT(GC_POLL_LIMIT)
+        GC_PAYLOAD_TYPE = GC_CONST_CONF.GC_PAYLOAD_TYPE(GC_PAYLOAD_TYPE)
     }
 
 }

@@ -1,10 +1,10 @@
 package com.a9ae0b01f0ffc.tpn.tests
 
 import com.a9ae0b01f0ffc.black_box.main.T_s
-import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_sender
-import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_soap_message
+import com.a9ae0b01f0ffc.middleware.implementation.T_middleware_sender
+import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_http_message
 import com.a9ae0b01f0ffc.tpn.main.T_main
-import com.a9ae0b01f0ffc.tpn.main.T_tpn_s
+
 import org.junit.Test
 
 class T_tests_tpn {
@@ -119,7 +119,7 @@ class T_tests_tpn {
                 "      </tem:TranHistNotification>\n" +
                 "   </soap:Body>\n" +
                 "</soap:Envelope>"
-        new T_tpn_sender().send_soap(new T_tpn_soap_message(l_output_data))
+        T_middleware_sender.send_http_request(new T_tpn_http_message(l_output_data))
     }
 
     @Test
