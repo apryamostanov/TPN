@@ -43,7 +43,7 @@ class T_tpn_channel_master_thread extends Thread {
 
     @I_black_box
     void run_with_logging() {
-        final String LC_SQL_SELECT_MAIN_QUERY = """select * from messages where lower(status) in (lower("$GC_STATUS_NEW"), lower("$GC_STATUS_FAILED_NO_CONNECTION"), lower("$GC_STATUS_FAILED_RESPONSE")) and endpoint="$p_channel_name" """
+        final String LC_SQL_SELECT_MAIN_QUERY = """select * from messages where lower(status) in (lower("$GC_STATUS_NEW"), lower("$GC_STATUS_FAILED_NO_CONNECTION"), lower("$GC_STATUS_FAILED_RESPONSE")) and endpoint="$p_channel_name" and ifnull(retry_count,0)< ${c().GC_MAX_RETRY_COUNT} """
         final String LC_SQL_UPDATE_STATUS = """update messages set status=? where tpn_internal_unique_id=?"""
         l().log_info(s.Master_thread_for_channel_Z1, p_channel_name)
         while (GC_TRUE) {
