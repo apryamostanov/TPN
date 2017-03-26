@@ -19,7 +19,6 @@ class T_tpn_http_message extends T_http_message {
     Integer p_retry_count = GC_ZERO
     Date p_post_date = GC_NULL_OBJ_REF as Date
     Integer p_tpn_internal_unique_id = GC_NULL_OBJ_REF as Integer
-    String p_payload_type = GC_PAYLOAD_TYPE_XML
     String p_state = GC_EMPTY_STRING
 
     @I_black_box
@@ -30,7 +29,6 @@ class T_tpn_http_message extends T_http_message {
         set_trxn_id(i_row.txn_id)
         set_source(i_row.source)
         set_payload(i_row.payload)
-        set_payload_type(T_tpn_base_6_util.c().GC_PAYLOAD_TYPE)
         set_channel_name(i_row.endpoint)
         set_uri(i_url)
         set_retry_count(i_row.retry_count)
@@ -46,6 +44,12 @@ class T_tpn_http_message extends T_http_message {
     @I_black_box
     T_tpn_http_message(String i_xml) {
         p_payload = i_xml
+    }
+
+    @I_black_box
+    @Override
+    String get_payload_type() {
+        return T_tpn_base_6_util.c().GC_PAYLOAD_TYPE
     }
 
     @I_black_box
