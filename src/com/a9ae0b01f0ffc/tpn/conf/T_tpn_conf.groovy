@@ -14,7 +14,7 @@ class T_tpn_conf extends T_common_conf{
     String GC_CONTENT_TYPE = "application/soap+xml;charset=UTF-8;action=&quot;http://tempuri.org/IWDNotifyService/TranHistNotificationRequest&quot;"
     String GC_HOST_NAME = "localhost"
     String GC_UNSERCURE_TEST_TLS_SSL_MODE = "false"
-    String GC_CYCLE_INTERVAL_MILLISECONDS = 2000
+    String GC_CYCLE_INTERVAL_MILLISECONDS = 500
     String GC_MYSQL_CONNECTION_STRING = "jdbc:mysql://localhost:3306/messages"
     String GC_MYSQL_USERNAME = "messages"
     String GC_MYSQL_PASSWORD = "change"

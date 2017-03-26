@@ -46,22 +46,25 @@ class T_tpn_channel_master_thread extends Thread {
         final String LC_SQL_SELECT_MAIN_QUERY = """select * from messages where lower(status) in (lower("$GC_STATUS_NEW"), lower("$GC_STATUS_FAILED_NO_CONNECTION"), lower("$GC_STATUS_FAILED_RESPONSE")) and endpoint="$p_channel_name" """
         final String LC_SQL_UPDATE_STATUS = """update messages set status=? where tpn_internal_unique_id=?"""
         l().log_info(s.Master_thread_for_channel_Z1, p_channel_name)
-        l().log_send_sql(LC_SQL_SELECT_MAIN_QUERY)
-        get_sql().eachRow(LC_SQL_SELECT_MAIN_QUERY) { l_row ->
-            l().log_receive_sql(l_row)
-            sql_update(LC_SQL_UPDATE_STATUS, GC_STATUS_UNKNOWN, l_row.tpn_internal_unique_id)
-            commit()
-            T_tpn_http_message l_message = new T_tpn_http_message(l_row, p_url)
-            T_tpn_channel_worker_thread l_next_thread
-            if (l_message.get_state() == GC_STATUS_NEW) {
-                l_next_thread = ++p_worker_threads_round_robin_normal.iterator()
-            } else {
-                l_next_thread = ++p_worker_threads_round_robin_retry.iterator()
+        while (GC_TRUE) {
+            l().log_send_sql(LC_SQL_SELECT_MAIN_QUERY)
+            get_sql().eachRow(LC_SQL_SELECT_MAIN_QUERY) { l_row ->
+                l().log_receive_sql(l_row)
+                sql_update(LC_SQL_UPDATE_STATUS, GC_STATUS_UNKNOWN, l_row.tpn_internal_unique_id)
+                commit()
+                T_tpn_http_message l_message = new T_tpn_http_message(l_row, p_url)
+                T_tpn_channel_worker_thread l_next_thread
+                if (l_message.get_state() == GC_STATUS_NEW) {
+                    l_next_thread = ++p_worker_threads_round_robin_normal.iterator()
+                } else {
+                    l_next_thread = ++p_worker_threads_round_robin_retry.iterator()
+                }
+                l_next_thread.p_tpn_http_message_queue.put(l_message)
+                synchronized (l_next_thread) {
+                    l_next_thread.notify()
+                }
             }
-            l_next_thread.p_tpn_http_message_queue.put(l_message)
-            synchronized (l_next_thread) {
-                l_next_thread.notify()
-            }
+            sleep(Integer.valueOf(c().GC_CYCLE_INTERVAL_MILLISECONDS)) //todo: replace mysql with MQ
         }
     }
 
