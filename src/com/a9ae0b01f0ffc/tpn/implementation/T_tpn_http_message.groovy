@@ -3,12 +3,16 @@ package com.a9ae0b01f0ffc.tpn.implementation
 import com.a9ae0b01f0ffc.black_box.annotations.I_black_box
 import com.a9ae0b01f0ffc.black_box.annotations.I_fix_variable_scopes
 import com.a9ae0b01f0ffc.middleware.implementation.T_http_message
+import com.a9ae0b01f0ffc.tpn.main.T_tpn_base_6_util
 import groovy.transform.ToString
 
 @I_fix_variable_scopes
 @ToString(includeNames = true, includeFields = true, includeSuper = true)
 class T_tpn_http_message extends T_http_message {
 
+    static final String PC_HEADER_NAME_USER_AGENT = "User-Agent"
+    static final String PC_HEADER_NAME_ACCEPT_LANGUAGE = "Accept-Language"
+    static final String PC_HEADER_NAME_ACCEPT_CONTENT_TYPE = "Content-Type"
     String p_trxn_id = GC_EMPTY_STRING
     String p_source = GC_EMPTY_STRING
     String p_channel_name = GC_EMPTY_STRING
@@ -18,8 +22,28 @@ class T_tpn_http_message extends T_http_message {
     String p_payload_type = GC_PAYLOAD_TYPE_XML
     String p_state = GC_EMPTY_STRING
 
+    @I_black_box
     T_tpn_http_message() {}
 
+    @I_black_box
+    T_tpn_http_message(Object i_row, String i_url) {
+        set_trxn_id(i_row.txn_id)
+        set_source(i_row.source)
+        set_payload(i_row.payload)
+        set_payload_type(T_tpn_base_6_util.c().GC_PAYLOAD_TYPE)
+        set_channel_name(i_row.endpoint)
+        set_uri(i_url)
+        set_retry_count(i_row.retry_count)
+        set_state(i_row.status)
+        set_post_date(i_row.post_dt)
+        set_tpn_internal_unique_id(i_row.tpn_internal_unique_id)
+        set_method(T_tpn_base_6_util.c().GC_REQUEST_METHOD)
+        set_header(PC_HEADER_NAME_USER_AGENT, T_tpn_base_6_util.c().GC_USER_AGENT)
+        set_header(PC_HEADER_NAME_ACCEPT_LANGUAGE, T_tpn_base_6_util.c().GC_ACCEPT_LANGUAGE)
+        set_header(PC_HEADER_NAME_ACCEPT_CONTENT_TYPE, T_tpn_base_6_util.c().GC_CONTENT_TYPE)
+    }
+
+    @I_black_box
     T_tpn_http_message(String i_xml) {
         p_payload = i_xml
     }

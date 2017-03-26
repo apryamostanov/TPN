@@ -3,13 +3,12 @@ package com.a9ae0b01f0ffc.tpn.main
 import com.a9ae0b01f0ffc.black_box.annotations.I_black_box
 import com.a9ae0b01f0ffc.black_box.implementation.T_logger
 import com.a9ae0b01f0ffc.black_box.main.T_logging_base_5_context
-import com.a9ae0b01f0ffc.commons.main.T_common_utils
 import groovy.sql.Sql
 
 class T_tpn_base_6_util extends T_tpn_base_5_context{
 
     @I_black_box
-    static void sql_update(String i_sql_string, String... i_bind_variables = GC_SKIPPED_ARGS) {
+    static void sql_update(String i_sql_string, Object... i_bind_variables = GC_SKIPPED_ARGS) {
         l().log_send_sql("update", i_sql_string, i_bind_variables)
         if (method_arguments_present(i_bind_variables)) {
             get_sql().executeUpdate(i_sql_string, i_bind_variables)
