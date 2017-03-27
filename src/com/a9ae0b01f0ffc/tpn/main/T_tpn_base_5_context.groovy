@@ -15,13 +15,13 @@ class T_tpn_base_5_context extends T_tpn_base_4_const {
         get_context().p_commons = new T_tpn_conf(i_commons_conf_file_name)
         T_common_base_2_context.init_custom(i_commons_conf_file_name)
         T_logging_base_5_context.init_custom(c().GC_BLACK_BOX_CONFIG)
+        get_context().p_sql = Sql.newInstance(c().GC_MYSQL_CONNECTION_STRING, c().GC_MYSQL_USERNAME, c().GC_MYSQL_PASSWORD, c().GC_MYSQL_DRIVER)
+        get_context().p_sql.getConnection().setAutoCommit(GC_FALSE)
     }
 
     static T_tpn_base_5_context get_context() {
         if (is_null(p_context_thread_local.get())) {
             p_context_thread_local.set(new T_tpn_base_5_context())
-            get_context().p_sql = Sql.newInstance(c().GC_MYSQL_CONNECTION_STRING, c().GC_MYSQL_USERNAME, c().GC_MYSQL_PASSWORD, c().GC_MYSQL_DRIVER)
-            get_context().p_sql.getConnection().setAutoCommit(GC_FALSE)
         }
         return p_context_thread_local.get()
     }

@@ -1,10 +1,12 @@
 package com.a9ae0b01f0ffc.tpn.main
 
 import com.a9ae0b01f0ffc.black_box.annotations.I_black_box
+import com.a9ae0b01f0ffc.black_box.annotations.I_fix_variable_scopes
 import com.a9ae0b01f0ffc.black_box.implementation.T_logger
 import com.a9ae0b01f0ffc.black_box.main.T_logging_base_5_context
 import groovy.sql.Sql
 
+@I_fix_variable_scopes
 class T_tpn_base_6_util extends T_tpn_base_5_context{
 
     @I_black_box

@@ -43,14 +43,16 @@ class T_tpn_channel_master_thread extends Thread {
 
     @I_black_box
     void run_with_logging() {
-        final String LC_SQL_SELECT_MAIN_QUERY = """select * from messages where lower(status) in (lower("$GC_STATUS_NEW"), lower("$GC_STATUS_FAILED_NO_CONNECTION"), lower("$GC_STATUS_FAILED_RESPONSE")) and endpoint="$p_channel_name" and ifnull(retry_count,0)< ${c().GC_MAX_RETRY_COUNT} """
+        final String LC_SQL_SELECT_MAIN_QUERY = """select * from messages where lower(status) in (lower("$GC_STATUS_NEW"), lower("$GC_STATUS_FAILED_NO_CONNECTION"), lower("$GC_STATUS_FAILED_RESPONSE")) and endpoint="$p_channel_name" and ifnull(retry_count,0)< ${c().GC_MAX_RETRY_COUNT} order by tpn_internal_unique_id asc"""
         final String LC_SQL_UPDATE_STATUS = """update messages set status=? where tpn_internal_unique_id=?"""
+        final String LC_SQL_UPDATE_DUPLICATE = """update messages set status=? where tpn_internal_unique_id<>? and txn_id=?"""
         l().log_info(s.Master_thread_for_channel_Z1, p_channel_name)
         while (GC_TRUE) {
             l().log_send_sql(LC_SQL_SELECT_MAIN_QUERY)
             get_sql().eachRow(LC_SQL_SELECT_MAIN_QUERY) { l_row ->
                 l().log_receive_sql(l_row)
                 sql_update(LC_SQL_UPDATE_STATUS, GC_STATUS_UNKNOWN, l_row.tpn_internal_unique_id)
+                sql_update(LC_SQL_UPDATE_DUPLICATE, GC_STATUS_DUPLICATE, l_row.tpn_internal_unique_id, l_row.txn_id)
                 commit()
                 T_tpn_http_message l_message = new T_tpn_http_message(l_row, p_url)
                 T_tpn_channel_worker_thread l_next_thread

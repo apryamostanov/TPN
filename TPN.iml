@@ -38,7 +38,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Middleware/out/artifacts/Middleware_jar/Middleware.jar!/" />
+          <root url="jar://$MODULE_DIR$/../Middleware/out/artifacts/Middleware_jar2/Middleware_redist.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -26,7 +26,7 @@ class T_tpn_channel_worker_thread extends Thread {
 
     @I_black_box
     T_tpn_channel_worker_thread(String i_channel_name, String i_endpoint, Integer i_thread_number, String i_mode, String i_conf_file_name) {
-        super(i_channel_name + GC_UNDERSCORE + i_thread_number.toString())
+        super.setName(i_channel_name + GC_UNDERSCORE + i_thread_number.toString())
         init(i_channel_name, i_endpoint, i_thread_number, i_mode, i_conf_file_name)
     }
 

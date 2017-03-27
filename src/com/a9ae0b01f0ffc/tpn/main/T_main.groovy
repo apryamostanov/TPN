@@ -1,10 +1,12 @@
 package com.a9ae0b01f0ffc.tpn.main
 
 import com.a9ae0b01f0ffc.black_box.annotations.I_black_box
+import com.a9ae0b01f0ffc.black_box.annotations.I_fix_variable_scopes
 import com.a9ae0b01f0ffc.commons.implementation.exceptions.E_application_exception
 import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_channel_master_thread
 import groovy.util.slurpersupport.GPathResult
 
+@I_fix_variable_scopes
 class T_main extends T_tpn_base_6_util {
 
     @I_black_box
