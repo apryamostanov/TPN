@@ -10,7 +10,7 @@ import groovy.util.slurpersupport.GPathResult
 class T_main extends T_tpn_base_6_util {
 
     @I_black_box
-    private static void spawn_thread(GPathResult i_thread_xml) {
+    private static void spawn_thread(GPathResult i_thread_xml, String i_conf_file_name) {
         T_tpn_channel_master_thread l_tpn_thread = new T_tpn_channel_master_thread(
                 i_thread_xml.@channel_name.text()
                 , i_thread_xml.@url.text()
@@ -18,6 +18,7 @@ class T_main extends T_tpn_base_6_util {
                 , Integer.parseInt(i_thread_xml.@retry_threads_count.text())
                 , i_thread_xml.@normal_config_file_name.text()
                 , i_thread_xml.@retry_config_file_name.text()
+                , i_conf_file_name
         )
         l_tpn_thread.start()
     }
@@ -33,7 +34,7 @@ class T_main extends T_tpn_base_6_util {
         l().log_info(s.Welcome_to_Wirecard_Transaction_Push_Notification_Service)
         GPathResult p_conf = (GPathResult) new XmlSlurper().parse(c().GC_THREAD_CONFIG_FILE_NAME)
         for (l_thread_xml in p_conf.children()) {
-            spawn_thread(l_thread_xml as GPathResult)
+            spawn_thread(l_thread_xml as GPathResult, l_conf_file_name)
         }
     }
 

@@ -2,6 +2,7 @@ package com.a9ae0b01f0ffc.tpn.main
 
 import com.a9ae0b01f0ffc.black_box.main.T_logging_base_5_context
 import com.a9ae0b01f0ffc.commons.implementation.main.T_common_base_2_context
+import com.a9ae0b01f0ffc.middleware.main.T_middleware_base_5_context
 import com.a9ae0b01f0ffc.tpn.conf.T_tpn_conf
 import groovy.sql.Sql
 
@@ -15,6 +16,7 @@ class T_tpn_base_5_context extends T_tpn_base_4_const {
         get_context().p_commons = new T_tpn_conf(i_commons_conf_file_name)
         T_common_base_2_context.init_custom(i_commons_conf_file_name)
         T_logging_base_5_context.init_custom(c().GC_BLACK_BOX_CONFIG)
+        T_middleware_base_5_context.init_custom(i_commons_conf_file_name)
         get_context().p_sql = Sql.newInstance(c().GC_MYSQL_CONNECTION_STRING, c().GC_MYSQL_USERNAME, c().GC_MYSQL_PASSWORD, c().GC_MYSQL_DRIVER)
         get_context().p_sql.getConnection().setAutoCommit(GC_FALSE)
     }

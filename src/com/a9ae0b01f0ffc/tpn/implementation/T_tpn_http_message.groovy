@@ -26,7 +26,7 @@ class T_tpn_http_message extends T_http_message {
 
     @I_black_box
     T_tpn_http_message(Object i_row, String i_url) {
-        set_trxn_id(i_row.txn_id)
+        set_trxn_id(Integer.parseInt(i_row.txn_id)) //this is varchar in mysql currently
         set_source(i_row.source)
         set_payload(i_row.payload)
         set_channel_name(i_row.endpoint)

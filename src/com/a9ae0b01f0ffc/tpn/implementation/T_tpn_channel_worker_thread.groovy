@@ -15,8 +15,8 @@ import static com.a9ae0b01f0ffc.tpn.main.T_tpn_base_6_util.*
 @I_fix_variable_scopes
 class T_tpn_channel_worker_thread extends Thread {
     
-    static final String PC_SQL_UPDATE_SUCCESS = "update messages set status=?, response_payload=? where tpn_internal_unique_id=?"
-    static final String PC_SQL_UPDATE_FAIL = "update messages set status=?, retry_count=ifnull(retry_count, 0) + 1, response_payload=? where tpn_internal_unique_id=?"
+    static final String PC_SQL_UPDATE_SUCCESS = "update messages set status=?, response_payload=?, thread_number=? where tpn_internal_unique_id=?"
+    static final String PC_SQL_UPDATE_FAIL = "update messages set status=?, retry_count=ifnull(retry_count, 0) + 1, response_payload=?, thread_number=? where tpn_internal_unique_id=?"
     String p_channel_name = GC_EMPTY_STRING
     String p_endpoint = GC_EMPTY_STRING
     Integer p_thread_number = GC_ZERO
@@ -64,23 +64,23 @@ class T_tpn_channel_worker_thread extends Thread {
             I_http_message l_http_response = T_middleware_sender.send_http_request(i_tpn_http_message)
             Integer l_response_code = l_http_response.get_status()
             if (l_response_code == GC_HTTP_RESP_CODE_OK) {
-                sql_update(PC_SQL_UPDATE_SUCCESS, GC_STATUS_DELIVERED, l_http_response.toString(), i_tpn_http_message.get_tpn_internal_unique_id())
+                sql_update(PC_SQL_UPDATE_SUCCESS, GC_STATUS_DELIVERED, l_http_response.toString(), p_thread_number, i_tpn_http_message.get_tpn_internal_unique_id())
             } else if (l_response_code == GC_RESPONSE_CODE_CONNECTION_REFUSED) {
                 l().log_warning(s.Connection_refused_for_message_TPN_ID_Z1_CoreCard_ID_Z2, i_tpn_http_message.p_tpn_internal_unique_id, i_tpn_http_message.p_trxn_id)
-                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_NO_CONNECTION, l_http_response.toString(), i_tpn_http_message.get_tpn_internal_unique_id())
+                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_NO_CONNECTION, l_http_response.toString(), p_thread_number, i_tpn_http_message.get_tpn_internal_unique_id())
             } else if (l_response_code == GC_RESPONSE_CODE_INVALID_REQUEST) {
                 l().log_warning(s.Invalid_Request_for_message_TPN_ID_Z1_CoreCard_ID_Z2, l_row.tpn_internal_unique_id, i_tpn_http_message.p_trxn_id)
-                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_INVALID_REQUEST, l_http_response.toString(), i_tpn_http_message.get_tpn_internal_unique_id())
+                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_INVALID_REQUEST, l_http_response.toString(), p_thread_number, i_tpn_http_message.get_tpn_internal_unique_id())
             } else if (l_response_code == GC_RESPONSE_CODE_INVALID_RESPONSE) {
                 l().log_warning(s.Invalid_Response_for_message_TPN_ID_Z1_CoreCard_ID_Z2, l_row.tpn_internal_unique_id, i_tpn_http_message.p_trxn_id)
-                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_INVALID_RESPONSE, l_http_response.toString(), i_tpn_http_message.get_tpn_internal_unique_id())
+                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_INVALID_RESPONSE, l_http_response.toString(), p_thread_number, i_tpn_http_message.get_tpn_internal_unique_id())
             } else {
                 l().log_warning(s.Unsuccessful_HTTP_Response_Code_Z1_for_message_TPN_ID_Z2_CoreCard_ID_Z3, l_response_code, i_tpn_http_message.p_tpn_internal_unique_id, i_tpn_http_message.p_trxn_id)
-                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_RESPONSE, l_http_response.toString(), i_tpn_http_message.get_tpn_internal_unique_id())
+                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_RESPONSE, l_http_response.toString(), p_thread_number, i_tpn_http_message.get_tpn_internal_unique_id())
             }
         } catch (Throwable e_others) {
             l().log_warning(s.Exception_Z1_for_message_TPN_ID_Z2_CoreCard_ID_Z3, e_others, i_tpn_http_message.p_tpn_internal_unique_id, i_tpn_http_message.p_trxn_id)
-            sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_EXCEPTION, i_tpn_http_message.get_tpn_internal_unique_id(), GC_EMPTY_STRING)
+            sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_EXCEPTION, GC_EMPTY_STRING, p_thread_number, i_tpn_http_message.get_tpn_internal_unique_id())
         }
         commit()
     }

@@ -12,19 +12,21 @@ class T_tpn_channel_master_thread extends Thread {
     String p_url = GC_EMPTY_STRING
     Integer p_normal_threads_count = GC_ZERO
     Integer p_retry_threads_count = GC_ZERO
+    String p_config_file_name = GC_EMPTY_STRING
     String p_normal_config_file_name = GC_EMPTY_STRING
-    String retry_config_file_name = GC_EMPTY_STRING
+    String p_retry_config_file_name = GC_EMPTY_STRING
     T_round_robin<T_tpn_channel_worker_thread> p_worker_threads_round_robin_normal = GC_NULL_OBJ_REF as T_round_robin<T_tpn_channel_worker_thread>
     T_round_robin<T_tpn_channel_worker_thread> p_worker_threads_round_robin_retry = GC_NULL_OBJ_REF as T_round_robin<T_tpn_channel_worker_thread>
 
     @I_black_box
-    T_tpn_channel_master_thread(String i_channel_name, String i_url, Integer i_normal_threads_count, Integer i_retry_threads_count, String i_normal_config_file_name, String i_retry_config_file_name) {
+    T_tpn_channel_master_thread(String i_channel_name, String i_url, Integer i_normal_threads_count, Integer i_retry_threads_count, String i_normal_config_file_name, String i_retry_config_file_name, String i_config_file_name) {
+        this.p_config_file_name = i_config_file_name
         this.p_channel_name = i_channel_name
         this.p_url = i_url
         this.p_normal_threads_count = i_normal_threads_count
         this.p_retry_threads_count = i_retry_threads_count
         this.p_normal_config_file_name = i_normal_config_file_name
-        this.retry_config_file_name = i_retry_config_file_name
+        this.p_retry_config_file_name = i_retry_config_file_name
         ArrayList<T_tpn_channel_worker_thread> l_channel_worker_threads_normal = new ArrayList<T_tpn_channel_worker_thread>()
         ArrayList<T_tpn_channel_worker_thread> l_channel_worker_threads_retry = new ArrayList<T_tpn_channel_worker_thread>()
         for (Integer l_thread_index in GC_ONE_ONLY..p_normal_threads_count) {
@@ -73,7 +75,7 @@ class T_tpn_channel_master_thread extends Thread {
     @Override
     void run() {
         setName(GC_MASTER_TPN_THREAD_NAME_PREFIX + p_channel_name)
-        init_custom(c().GC_THREAD_CONFIG_FILE_NAME)
+        init_custom(p_config_file_name)
         run_with_logging()
     }
 
