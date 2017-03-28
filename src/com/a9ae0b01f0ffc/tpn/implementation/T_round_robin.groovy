@@ -9,18 +9,17 @@ import com.a9ae0b01f0ffc.tpn.main.T_tpn_base_6_util
 class T_round_robin<T_type> extends T_tpn_base_6_util implements Iterable<T_type> {
 
     private List<T_type> p_list
+    private Integer lp_index = GC_ZERO
 
-    @I_black_box
+    @I_black_box("error")//orig=
     T_round_robin(List<T_type> i_list) {
         p_list = i_list
     }
 
     @Override
-    @I_black_box
+    @I_black_box("error")//orig=
     Iterator<T_type> iterator() {
         return new Iterator<T_type>() {
-
-            private Integer lp_index = GC_ZERO
 
             @Override
             boolean hasNext() {
@@ -30,7 +29,7 @@ class T_round_robin<T_type> extends T_tpn_base_6_util implements Iterable<T_type
             @Override
             T_type next() {
                 T_type l_result = p_list.get(lp_index)
-                lp_index = (lp_index + GC_ONE_ONLY) % p_list.size()
+                lp_index = ((lp_index + GC_ONE_ONLY) % p_list.size())
                 return l_result
             }
 

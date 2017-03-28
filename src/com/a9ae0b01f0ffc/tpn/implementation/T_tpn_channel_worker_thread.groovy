@@ -2,11 +2,8 @@ package com.a9ae0b01f0ffc.tpn.implementation
 
 import com.a9ae0b01f0ffc.black_box.annotations.I_black_box
 import com.a9ae0b01f0ffc.black_box.annotations.I_fix_variable_scopes
-import com.a9ae0b01f0ffc.commons.implementation.exceptions.E_application_exception
 import com.a9ae0b01f0ffc.middleware.Interfaces.I_http_message
 import com.a9ae0b01f0ffc.middleware.implementation.T_middleware_sender
-import com.a9ae0b01f0ffc.middleware.main.T_middleware_base_6_util
-import groovy.transform.CompileStatic
 
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -20,26 +17,26 @@ class T_tpn_channel_worker_thread extends Thread {
     String p_channel_name = GC_EMPTY_STRING
     String p_endpoint = GC_EMPTY_STRING
     Integer p_thread_number = GC_ZERO
-    String p_conf_file_name = GC_EMPTY_STRING
+    String p_worker_conf_file_name = GC_EMPTY_STRING
     String p_mode = GC_EMPTY_STRING
     LinkedBlockingQueue<T_tpn_http_message> p_tpn_http_message_queue = new LinkedBlockingQueue<T_tpn_http_message>()
 
-    @I_black_box
-    T_tpn_channel_worker_thread(String i_channel_name, String i_endpoint, Integer i_thread_number, String i_mode, String i_conf_file_name) {
+    @I_black_box("error")//orig=
+    T_tpn_channel_worker_thread(String i_channel_name, String i_endpoint, Integer i_thread_number, String i_mode, String i_worker_conf_file_name) {
         super.setName(i_channel_name + GC_UNDERSCORE + i_thread_number.toString())
-        init(i_channel_name, i_endpoint, i_thread_number, i_mode, i_conf_file_name)
+        init(i_channel_name, i_endpoint, i_thread_number, i_mode, i_worker_conf_file_name)
     }
 
-    @I_black_box
-    void init(String i_channel_name, String i_endpoint, Integer i_thread_number, String i_mode, String i_conf_file_name) {
+    @I_black_box("error")//orig=
+    void init(String i_channel_name, String i_endpoint, Integer i_thread_number, String i_mode, String i_worker_conf_file_name) {
         p_channel_name = i_channel_name
         p_endpoint = i_endpoint
         p_thread_number = i_thread_number
         p_mode = i_mode
-        p_conf_file_name = i_conf_file_name
+        p_worker_conf_file_name = i_worker_conf_file_name
     }
 
-    @I_black_box
+    @I_black_box("error")//orig=
     void run_with_logging() {
         while (GC_TRUE) {
             while (not(p_tpn_http_message_queue.isEmpty())) {
@@ -53,11 +50,11 @@ class T_tpn_channel_worker_thread extends Thread {
 
     @Override
     void run() {
-        init_custom(p_conf_file_name)
+        init_custom(p_worker_conf_file_name)
         run_with_logging()
     }
 
-    @I_black_box
+    @I_black_box("error")//orig=
     void process_message(T_tpn_http_message i_tpn_http_message) {
         try {
             T_middleware_sender.set_soft(GC_TRUE)
@@ -85,22 +82,22 @@ class T_tpn_channel_worker_thread extends Thread {
         commit()
     }
 
-    @I_black_box("error")
+    @I_black_box("error")//orig=("error")
     String get_channel_name() {
         return p_channel_name
     }
 
-    @I_black_box("error")
+    @I_black_box("error")//orig=("error")
     Integer get_thread_number() {
         return p_thread_number
     }
 
-    @I_black_box("error")
+    @I_black_box("error")//orig=("error")
     String get_conf_file_name() {
-        return p_conf_file_name
+        return p_worker_conf_file_name
     }
 
-    @I_black_box("error")
+    @I_black_box("error")//orig=("error")
     String get_mode() {
         return p_mode
     }

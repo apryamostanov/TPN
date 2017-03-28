@@ -1,6 +1,8 @@
 package com.a9ae0b01f0ffc.tpn.conf
 
 import com.a9ae0b01f0ffc.commons.implementation.config.T_common_conf
+import com.a9ae0b01f0ffc.middleware.main.T_middleware_base_4_const
+import com.a9ae0b01f0ffc.tpn.main.T_tpn_base_4_const
 
 
 class T_tpn_conf extends T_common_conf{
@@ -8,21 +10,20 @@ class T_tpn_conf extends T_common_conf{
     String GC_TPN_CLASSES_CONF
     String GC_BLACK_BOX_CONFIG
     String GC_THREAD_CONFIG_FILE_NAME
-    String GC_REQUEST_METHOD = "POST"
-    String GC_USER_AGENT = "Mozilla/5.0"
-    String GC_ACCEPT_LANGUAGE = "en-US,enq=0.5"
-    String GC_CONTENT_TYPE = "application/soap+xml;charset=UTF-8;action=&quot;http://tempuri.org/IWDNotifyService/TranHistNotificationRequest&quot;"
-    String GC_HOST_NAME = "localhost"
-    String GC_UNSERCURE_TEST_TLS_SSL_MODE = "false"
-    String GC_CYCLE_INTERVAL_MILLISECONDS = 500
-    String GC_MYSQL_CONNECTION_STRING = "jdbc:mysql://localhost:3306/messages"
-    String GC_MYSQL_USERNAME = "messages"
-    String GC_MYSQL_PASSWORD = "change"
-    String GC_MYSQL_DRIVER = "com.mysql.jdbc.Driver"
-    String GC_MODE = "normal"
-    String GC_MAX_RETRY_COUNT = 10
-    String GC_POLL_LIMIT = "5"
-    String GC_PAYLOAD_TYPE = "xml"
+    String GC_REQUEST_METHOD
+    String GC_USER_AGENT
+    String GC_ACCEPT_LANGUAGE
+    String GC_CONTENT_TYPE
+    String GC_CYCLE_INTERVAL_MILLISECONDS
+    String GC_MYSQL_CONNECTION_STRING
+    String GC_MYSQL_USERNAME
+    String GC_MYSQL_PASSWORD
+    String GC_MYSQL_DRIVER
+    String GC_MODE
+    String GC_MAX_RETRY_COUNT
+    String GC_POLL_LIMIT
+    String GC_PAYLOAD_TYPE
+    String GC_CHECK_DUPLICATES
 
     T_tpn_conf(String i_conf_file_name) {
         super(i_conf_file_name)
@@ -33,9 +34,7 @@ class T_tpn_conf extends T_common_conf{
         GC_USER_AGENT = GC_CONST_CONF.GC_USER_AGENT(GC_USER_AGENT)
         GC_ACCEPT_LANGUAGE = GC_CONST_CONF.GC_ACCEPT_LANGUAGE(GC_ACCEPT_LANGUAGE)
         GC_CONTENT_TYPE = GC_CONST_CONF.GC_CONTENT_TYPE(GC_CONTENT_TYPE)
-        GC_HOST_NAME = GC_CONST_CONF.GC_HOST_NAME(GC_HOST_NAME)
-        GC_UNSERCURE_TEST_TLS_SSL_MODE = GC_CONST_CONF.GC_UNSERCURE_TEST_TLS_SSL_MODE(GC_UNSERCURE_TEST_TLS_SSL_MODE)
-        GC_CYCLE_INTERVAL_MILLISECONDS = GC_CONST_CONF.GC_POLL_INTERVAL_MILLISECONDS(GC_CYCLE_INTERVAL_MILLISECONDS)
+        GC_CYCLE_INTERVAL_MILLISECONDS = GC_CONST_CONF.GC_CYCLE_INTERVAL_MILLISECONDS(GC_CYCLE_INTERVAL_MILLISECONDS)
         GC_MYSQL_CONNECTION_STRING = GC_CONST_CONF.GC_MYSQL_CONNECTION_STRING(GC_MYSQL_CONNECTION_STRING)
         GC_MYSQL_USERNAME = GC_CONST_CONF.GC_MYSQL_USERNAME(GC_MYSQL_USERNAME)
         GC_MYSQL_PASSWORD = GC_CONST_CONF.GC_MYSQL_PASSWORD(GC_MYSQL_PASSWORD)
@@ -43,6 +42,8 @@ class T_tpn_conf extends T_common_conf{
         GC_MODE = GC_CONST_CONF.GC_MODE(GC_MODE)
         GC_POLL_LIMIT = GC_CONST_CONF.GC_POLL_LIMIT(GC_POLL_LIMIT)
         GC_PAYLOAD_TYPE = GC_CONST_CONF.GC_PAYLOAD_TYPE(GC_PAYLOAD_TYPE)
+        GC_CHECK_DUPLICATES = GC_CONST_CONF.GC_CHECK_DUPLICATES(GC_CHECK_DUPLICATES)
+        GC_MAX_RETRY_COUNT = GC_CONST_CONF.GC_MAX_RETRY_COUNT(GC_MAX_RETRY_COUNT)
     }
 
 }

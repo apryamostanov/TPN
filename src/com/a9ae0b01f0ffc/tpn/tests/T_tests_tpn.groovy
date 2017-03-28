@@ -1,9 +1,10 @@
 package com.a9ae0b01f0ffc.tpn.tests
 
 import com.a9ae0b01f0ffc.middleware.implementation.T_middleware_sender
+import com.a9ae0b01f0ffc.tpn.implementation.T_round_robin
 import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_http_message
 import com.a9ae0b01f0ffc.tpn.main.T_main
-
+import com.a9ae0b01f0ffc.tpn.main.T_tpn_base_5_context
 import org.junit.Test
 
 class T_tests_tpn {
@@ -124,6 +125,20 @@ class T_tests_tpn {
     @Test
     void test_002() {
         T_main.main(PC_CONF_FILE_NAME)
+    }
+
+    @Test
+    void test_003() {
+        T_tpn_base_5_context.init_custom(PC_CONF_FILE_NAME)
+        ArrayList<String> q = new ArrayList<String>()
+        q.add("w")
+        q.add("e")
+        q.add("r")
+        T_round_robin<String> z = new T_round_robin<String>(q)
+        while (true) {
+            System.out.println(z.iterator().next())
+            Thread.sleep(1000)
+        }
     }
 
 }

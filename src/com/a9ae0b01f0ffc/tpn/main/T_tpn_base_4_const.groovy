@@ -13,8 +13,9 @@ class T_tpn_base_4_const extends T_common_base_3_utils{
     public final static String GC_STATUS_FAILED_INVALID_REQUEST = "invalid_request"
     public final static String GC_STATUS_FAILED_RESPONSE = "failed_response"
     public final static String GC_STATUS_EXCEPTION = "error"
-    public final static String GC_STATUS_UNKNOWN = "unknown"
+    public final static String GC_STATUS_WAITING_FOR_PROCESSING = "waiting"
     public final static String GC_STATUS_DUPLICATE = "duplicate"
+    public final static String GC_STATUS_RENEWED = "renewed"
     public final static Integer GC_RESPONSE_CODE_INVALID_RESPONSE = -1
     public final static Integer GC_RESPONSE_CODE_INVALID_REQUEST = -2
     public final static Integer GC_RESPONSE_CODE_CONNECTION_REFUSED = -3
