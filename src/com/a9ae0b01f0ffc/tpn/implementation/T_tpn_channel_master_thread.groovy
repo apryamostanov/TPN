@@ -56,6 +56,7 @@ class T_tpn_channel_master_thread extends Thread {
 
     @I_black_box("error")//orig=
     void run_with_logging() {
+        String p_sql_select_main_query
         l().log_info(s.Starting_Master_thread_for_channel_Z1_with_retry_count_Z2, p_channel_name, c().GC_MAX_RETRY_COUNT)
         if (GC_ZERO == Integer.parseInt(c().GC_MAX_RETRY_COUNT)) {
             final String LC_SQL_SELECT_LAST_ID = """select max(tpn_internal_unique_id) as last_id from messages where endpoint="$p_channel_name" """
@@ -65,9 +66,13 @@ class T_tpn_channel_master_thread extends Thread {
             l().log_receive_sql(p_last_processed_tpn_id)
         }
         while (GC_TRUE) {
-            final String LC_SQL_SELECT_MAIN_QUERY = """select * from messages where lower(status) in (lower("$GC_STATUS_NEW"), lower("$GC_STATUS_RENEWED"), lower("$GC_STATUS_FAILED_NO_CONNECTION"), lower("$GC_STATUS_FAILED_RESPONSE")) and endpoint="$p_channel_name" and ifnull(retry_count,0)< ${c().GC_MAX_RETRY_COUNT} order by tpn_internal_unique_id asc"""
             final String LC_SQL_UPDATE_STATUS = """update messages set status=? where tpn_internal_unique_id=?"""
-            get_sql().eachRow(LC_SQL_SELECT_MAIN_QUERY) { l_row ->
+            if (GC_ZERO == Integer.parseInt(c().GC_MAX_RETRY_COUNT)) {
+                p_sql_select_main_query = """select * from messages where lower(status) in (lower("$GC_STATUS_NEW"), lower("$GC_STATUS_RENEWED"), lower("$GC_STATUS_FAILED_NO_CONNECTION"), lower("$GC_STATUS_FAILED_RESPONSE")) and endpoint="$p_channel_name" and tpn_internal_unique_id > $p_last_processed_tpn_id order by tpn_internal_unique_id asc"""
+            } else {
+                p_sql_select_main_query = """select * from messages where lower(status) in (lower("$GC_STATUS_NEW"), lower("$GC_STATUS_RENEWED"), lower("$GC_STATUS_FAILED_NO_CONNECTION"), lower("$GC_STATUS_FAILED_RESPONSE")) and endpoint="$p_channel_name" and ifnull(retry_count,0)<= ${c().GC_MAX_RETRY_COUNT} order by tpn_internal_unique_id asc"""
+            }
+            get_sql().eachRow(p_sql_select_main_query) { l_row ->
                 l().log_receive_sql(l_row)
                 if (is_not_duplicate(Integer.parseInt(l_row.txn_id), l_row.tpn_internal_unique_id)) {
                     sql_update(LC_SQL_UPDATE_STATUS, GC_STATUS_WAITING_FOR_PROCESSING, l_row.tpn_internal_unique_id)

@@ -58,22 +58,23 @@ class T_tpn_channel_worker_thread extends Thread {
     void process_message(T_tpn_http_message i_tpn_http_message) {
         try {
             T_middleware_sender.set_soft(GC_TRUE)
-            I_http_message l_http_response = T_middleware_sender.send_http_request(i_tpn_http_message)
+            T_tpn_http_message l_tpn_http_message = new T_wdip2gfs_conversion_module().convert_http_message(i_tpn_http_message) as T_tpn_http_message
+            I_http_message l_http_response = T_middleware_sender.send_http_request(l_tpn_http_message)
             Integer l_response_code = l_http_response.get_status()
             if (l_response_code == GC_HTTP_RESP_CODE_OK) {
-                sql_update(PC_SQL_UPDATE_SUCCESS, GC_STATUS_DELIVERED, l_http_response.toString(), p_thread_number, i_tpn_http_message.get_tpn_internal_unique_id())
+                sql_update(PC_SQL_UPDATE_SUCCESS, GC_STATUS_DELIVERED, l_http_response.toString(), p_thread_number, l_tpn_http_message.get_tpn_internal_unique_id())
             } else if (l_response_code == GC_RESPONSE_CODE_CONNECTION_REFUSED) {
-                l().log_warning(s.Connection_refused_for_message_TPN_ID_Z1_CoreCard_ID_Z2, i_tpn_http_message.p_tpn_internal_unique_id, i_tpn_http_message.p_trxn_id)
-                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_NO_CONNECTION, l_http_response.toString(), p_thread_number, i_tpn_http_message.get_tpn_internal_unique_id())
+                l().log_warning(s.Connection_refused_for_message_TPN_ID_Z1_CoreCard_ID_Z2, l_tpn_http_message.p_tpn_internal_unique_id, l_tpn_http_message.p_trxn_id)
+                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_NO_CONNECTION, l_http_response.toString(), p_thread_number, l_tpn_http_message.get_tpn_internal_unique_id())
             } else if (l_response_code == GC_RESPONSE_CODE_INVALID_REQUEST) {
-                l().log_warning(s.Invalid_Request_for_message_TPN_ID_Z1_CoreCard_ID_Z2, l_row.tpn_internal_unique_id, i_tpn_http_message.p_trxn_id)
-                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_INVALID_REQUEST, l_http_response.toString(), p_thread_number, i_tpn_http_message.get_tpn_internal_unique_id())
+                l().log_warning(s.Invalid_Request_for_message_TPN_ID_Z1_CoreCard_ID_Z2, l_tpn_http_message.p_tpn_internal_unique_id, l_tpn_http_message.p_trxn_id)
+                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_INVALID_REQUEST, l_http_response.toString(), p_thread_number, l_tpn_http_message.get_tpn_internal_unique_id())
             } else if (l_response_code == GC_RESPONSE_CODE_INVALID_RESPONSE) {
-                l().log_warning(s.Invalid_Response_for_message_TPN_ID_Z1_CoreCard_ID_Z2, l_row.tpn_internal_unique_id, i_tpn_http_message.p_trxn_id)
-                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_INVALID_RESPONSE, l_http_response.toString(), p_thread_number, i_tpn_http_message.get_tpn_internal_unique_id())
+                l().log_warning(s.Invalid_Response_for_message_TPN_ID_Z1_CoreCard_ID_Z2, l_tpn_http_message.p_tpn_internal_unique_id, l_tpn_http_message.p_trxn_id)
+                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_INVALID_RESPONSE, l_http_response.toString(), p_thread_number, l_tpn_http_message.get_tpn_internal_unique_id())
             } else {
-                l().log_warning(s.Unsuccessful_HTTP_Response_Code_Z1_for_message_TPN_ID_Z2_CoreCard_ID_Z3, l_response_code, i_tpn_http_message.p_tpn_internal_unique_id, i_tpn_http_message.p_trxn_id)
-                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_RESPONSE, l_http_response.toString(), p_thread_number, i_tpn_http_message.get_tpn_internal_unique_id())
+                l().log_warning(s.Unsuccessful_HTTP_Response_Code_Z1_for_message_TPN_ID_Z2_CoreCard_ID_Z3, l_response_code, l_tpn_http_message.p_tpn_internal_unique_id, l_tpn_http_message.p_trxn_id)
+                sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_RESPONSE, l_http_response.toString(), p_thread_number, l_tpn_http_message.get_tpn_internal_unique_id())
             }
         } catch (Throwable e_others) {
             l().log_warning(s.Exception_Z1_for_message_TPN_ID_Z2_CoreCard_ID_Z3, e_others, i_tpn_http_message.p_tpn_internal_unique_id, i_tpn_http_message.p_trxn_id)
