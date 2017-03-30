@@ -45,10 +45,10 @@ class T_tpn_channel_master_thread extends Thread {
     }
 
     @I_black_box("error")//orig=
-    static Boolean is_not_duplicate(Integer i_trxn_id, Integer i_tpn_internal_unique_id) {
-        final String LC_SQL_SELECT_SUCCESSFUL_WITH_SAME_TRXN_ID_AND_DIFFERENT_UNIQUE_ID = """select * from messages where txn_id=$i_trxn_id and tpn_internal_unique_id<>$i_tpn_internal_unique_id and lower(status) in (lower("$GC_STATUS_DELIVERED"), lower("$GC_STATUS_WAITING_FOR_PROCESSING"))"""
+    static Boolean is_not_duplicate(Integer i_trxn_id, Integer i_tpn_internal_unique_id, String i_channel) {
+        final String LC_SQL_SELECT_SUCCESSFUL_WITH_SAME_TRXN_ID_AND_DIFFERENT_UNIQUE_ID = """select * from messages where endpoint="$i_channel" and txn_id=$i_trxn_id and tpn_internal_unique_id<>$i_tpn_internal_unique_id and lower(status) in (lower("$GC_STATUS_DELIVERED"), lower("$GC_STATUS_WAITING_FOR_PROCESSING"))"""
         get_sql().eachRow(LC_SQL_SELECT_SUCCESSFUL_WITH_SAME_TRXN_ID_AND_DIFFERENT_UNIQUE_ID) { l_row ->
-            l().log_warning(s.Transaction_with_same_TrxnID_Z1_and_different_UniqueID_Z2_already_exists_in_status_Z3_for_new_message_with_UniqueID_Z4, i_trxn_id, l_row.txn_id, l_row.status, i_tpn_internal_unique_id)
+            l().log_warning(s.Transaction_with_same_TrxnID_Z1_and_different_UniqueID_Z2_already_exists_in_status_Z3_for_new_message_with_UniqueID_Z4_for_channel_Z5, i_trxn_id, l_row.tpn_internal_unique_id, l_row.status, i_tpn_internal_unique_id, i_channel)
             return GC_FALSE
         }
         return GC_TRUE
@@ -74,7 +74,7 @@ class T_tpn_channel_master_thread extends Thread {
             }
             get_sql().eachRow(p_sql_select_main_query) { l_row ->
                 l().log_receive_sql(l_row)
-                if (is_not_duplicate(Integer.parseInt(l_row.txn_id), l_row.tpn_internal_unique_id)) {
+                if (is_not_duplicate(Integer.parseInt(l_row.txn_id), l_row.tpn_internal_unique_id, p_channel_name)) {
                     sql_update(LC_SQL_UPDATE_STATUS, GC_STATUS_WAITING_FOR_PROCESSING, l_row.tpn_internal_unique_id)
                     T_tpn_http_message l_message = new T_tpn_http_message(l_row, p_url)
                     if (GC_ZERO == Integer.parseInt(c().GC_MAX_RETRY_COUNT)) {

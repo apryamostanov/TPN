@@ -152,7 +152,7 @@ class T_tests_tpn {
         String q = """<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/" xmlns:a="https://wp1.wirecard.com/TransactionNotification/Fleet">
  <soap:Header/>
  <soap:Body>
- <tem:TransactionNotificationRequest>
+ <tem:TransactionNotificationRequest1>
   <a:product>
     <a:productID>1530</a:productID>
     <a:productName>019 - GFS SG Virtual - SGD - 426437</a:productName>
@@ -290,7 +290,7 @@ class T_tests_tpn {
     <a:expNonFuelCodeQty08>0</a:expNonFuelCodeQty08>
     <a:expNonFuelCodeCost08>0</a:expNonFuelCodeCost08>
   </a:fleet_125_data>
- </tem:TransactionNotificationRequest>
+ </tem:TransactionNotificationRequest1>
  </soap:Body>
  </soap:Envelope>"""
         //q=T_middleware_base_6_util.strip_namespaces_from_xml(q)

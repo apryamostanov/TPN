@@ -65,7 +65,7 @@ class T_wdip2gfs_conversion_module extends T_middleware_base_6_util implements I
         }
     }
 
-    @I_black_box
+    @I_black_box("error")
     static String make_payload_post(String i_xml_payload_orig) {
         String l_decorated_original_xml = "<root_added_by_tpn>" + i_xml_payload_orig + "</root_added_by_tpn>"
         GPathResult l_gpath_result = new XmlSlurper().parseText(l_decorated_original_xml)
@@ -73,6 +73,10 @@ class T_wdip2gfs_conversion_module extends T_middleware_base_6_util implements I
         //Below code is only for non-scheme transactions (i.e. Load/Unload/Fees/etc...)
         if (l_gpath_result.children().size() == GC_ONE_ONLY) {//Aftab xml
             l_gpath_result = l_gpath_result.children()[GC_FIRST_INDEX] as GPathResult
+            if (l_gpath_result.Body.TransactionNotificationRequest.children().size() == GC_EMPTY_SIZE) {
+                l().log_warning(s.Potentially_non_WDIP_original_message_structure)
+                return i_xml_payload_orig
+            }
             String l_available_balance = l_gpath_result.Body.TransactionNotificationRequest.account.AccountBalanceInt.text() + "." + l_gpath_result.Body.TransactionNotificationRequest.account.AccountBalanceDec.text()
             String l_AccountNumber = l_gpath_result.Body.TransactionNotificationRequest.account.AccountNumber.text()
             String l_BillingCurrencyCode = currency_digits(l_gpath_result.Body.TransactionNotificationRequest.amounts.billingCurrency.text().padLeft(GC_THREE_CHARS, GC_ZERO_CHAR))
