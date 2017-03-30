@@ -292,9 +292,10 @@ class T_tests_tpn {
   </a:fleet_125_data>
  </tem:TransactionNotificationRequest>
  </soap:Body>
- </soap:Envelope> """
-        GPathResult z = new XmlSlurper().parseText(T_middleware_base_6_util.strip_namespaces_from_xml(q))
-        System.out.println(z.Body.TransactionNotificationRequest.transaction.transactionTimeStamp.text())
+ </soap:Envelope>"""
+        //q=T_middleware_base_6_util.strip_namespaces_from_xml(q)
+       // GPathResult z = new XmlSlurper().parseText(q)
+        //System.out.println(z.Body.TransactionNotificationRequest.transaction.transactionTimeStamp.text())
         a.set_payload(q)
         System.out.println(new T_wdip2gfs_conversion_module().convert_http_message(a).get_payload())
         T_logging_base_6_util.l().print_stats()

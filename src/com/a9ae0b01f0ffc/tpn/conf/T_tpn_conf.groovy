@@ -24,6 +24,7 @@ class T_tpn_conf extends T_common_conf{
     String GC_POLL_LIMIT
     String GC_PAYLOAD_TYPE
     String GC_CHECK_DUPLICATES
+    String GC_CONVERT_TO_GFS_FORMAT
 
     T_tpn_conf(String i_conf_file_name) {
         super(i_conf_file_name)
@@ -44,6 +45,7 @@ class T_tpn_conf extends T_common_conf{
         GC_PAYLOAD_TYPE = GC_CONST_CONF.GC_PAYLOAD_TYPE(GC_PAYLOAD_TYPE)
         GC_CHECK_DUPLICATES = GC_CONST_CONF.GC_CHECK_DUPLICATES(GC_CHECK_DUPLICATES)
         GC_MAX_RETRY_COUNT = GC_CONST_CONF.GC_MAX_RETRY_COUNT(GC_MAX_RETRY_COUNT)
+        GC_CONVERT_TO_GFS_FORMAT = GC_CONST_CONF.GC_CONVERT_TO_GFS_FORMAT(GC_CONVERT_TO_GFS_FORMAT)
     }
 
 }
