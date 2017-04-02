@@ -10,7 +10,6 @@ import groovy.sql.Sql
 class T_tpn_base_6_util extends T_tpn_base_5_context {
 
     @I_black_box("error")
-//orig=
     static void sql_update(String i_sql_string, Object... i_bind_variables = GC_SKIPPED_ARGS) {
         l().log_send_sql("update", i_sql_string, i_bind_variables)
         if (method_arguments_present(i_bind_variables)) {
@@ -22,7 +21,6 @@ class T_tpn_base_6_util extends T_tpn_base_5_context {
     }
 
     @I_black_box("error")
-//orig=
     static void commit() {
         l().log_send_sql("commit")
         get_sql().commit()
@@ -30,15 +28,14 @@ class T_tpn_base_6_util extends T_tpn_base_5_context {
     }
 
     @I_black_box("error")
-//orig=
     static Sql get_sql() {
-        //we rely on MySQL property "autoreconnect" in config files
-        get_context().p_sql = Sql.newInstance(c().GC_MYSQL_CONNECTION_STRING, c().GC_MYSQL_USERNAME, c().GC_MYSQL_PASSWORD, c().GC_MYSQL_DRIVER)
+        if ((System.currentTimeMillis() - get_context().p_sql_last_init_time_millis) >= new Long(c().GC_SQL_SESSION_REFRESH_INTERVAL_MILLISECONDS)) {
+            init_sql()
+        }
         return get_context().p_sql
     }
 
     @I_black_box("error")
-//orig=("error")
     static T_logger l() {
         return T_logging_base_5_context.l()
     }

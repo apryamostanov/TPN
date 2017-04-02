@@ -19,8 +19,9 @@ class T_tpn_base_4_const extends T_common_base_3_utils{
     public final static Integer GC_RESPONSE_CODE_INVALID_RESPONSE = -1
     public final static Integer GC_RESPONSE_CODE_INVALID_REQUEST = -2
     public final static Integer GC_RESPONSE_CODE_CONNECTION_REFUSED = -3
-    public final static String GC_MAIN_TPN_THREAD_NAME = "TPN_MAIN_THREAD"
-    public final static String GC_MASTER_TPN_THREAD_NAME_PREFIX = "TPN_CHANNEL_MASTER_THREAD_"
+    public final static String GC_MAIN_TPN_THREAD_NAME = "TPN_MAIN"
+    public final static String GC_MASTER_TPN_THREAD_NAME_PREFIX = "TPN_MASTER_"
+    public final static String GC_WORKER_TPN_THREAD_NAME_PREFIX = "TPN_WORKER_"
     public final static Integer GC_MYSQL_VARCHAR_LIMIT = 3999
 
 }

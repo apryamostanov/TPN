@@ -98,7 +98,7 @@ class T_tpn_channel_master_thread extends Thread {
                 //here is no wait and it causes CPU-intensive upload of messages into queues of worker threads.
                 //This is normal behavior in case when there are many messages accumulated in DB - they get assigned to threads and loaded into RAM (Java heap)
             }
-            sleep(Integer.valueOf(c().GC_CYCLE_INTERVAL_MILLISECONDS))
+            sleep(new Long(c().GC_CYCLE_INTERVAL_MILLISECONDS))
         }
     }
 

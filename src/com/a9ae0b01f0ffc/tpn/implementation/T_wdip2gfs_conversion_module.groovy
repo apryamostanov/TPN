@@ -5,6 +5,7 @@ import com.a9ae0b01f0ffc.black_box.annotations.I_fix_variable_scopes
 import com.a9ae0b01f0ffc.middleware.Interfaces.I_http_conversion_module
 import com.a9ae0b01f0ffc.middleware.Interfaces.I_http_message
 import com.a9ae0b01f0ffc.middleware.main.T_middleware_base_6_util
+import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import groovy.util.slurpersupport.GPathResult
 import groovy.util.slurpersupport.NodeChild
