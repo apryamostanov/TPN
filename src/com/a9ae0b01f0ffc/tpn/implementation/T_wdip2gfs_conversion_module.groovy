@@ -93,7 +93,7 @@ class T_wdip2gfs_conversion_module extends T_middleware_base_6_util implements I
 //l_gpath_result.Body.TransactionNotificationRequest.pos_merchant.merchantCity.text()
             String l_PostTime = d2s(s2d(l_gpath_result.Body.TransactionNotificationRequest.transaction.transactionLocalDate.text(), "dd-MMM-yyyy"), "yyyy-MM-dd") + "T" + l_gpath_result.Body.TransactionNotificationRequest.transaction.transactionLocalTime.text()
             String l_PostingRef = (l_IsDeclined == "no" ? "Approved" : ("Declined - " + l_gpath_result.Body.TransactionNotificationRequest.transaction.postingReference.text()))
-            String l_ProductBin = l_gpath_result.Body.TransactionNotificationRequest.card.cardNumber.text().substring(0, 6)
+            String l_ProductBin = substr(l_gpath_result.Body.TransactionNotificationRequest.card.cardNumber.text(), 0, 6)
             String l_ProxyNumber = l_gpath_result.Body.TransactionNotificationRequest.card.proxyNumber.text()
             String l_SpendCategory = "Miscellaneous"
             String l_TranId = l_gpath_result.Body.TransactionNotificationRequest.transaction.transactionId.text()
