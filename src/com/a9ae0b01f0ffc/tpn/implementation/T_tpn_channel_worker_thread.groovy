@@ -61,7 +61,7 @@ class T_tpn_channel_worker_thread extends Thread {
             T_middleware_sender.set_soft(GC_TRUE)
             T_tpn_http_message l_tpn_http_message = i_tpn_http_message
             if (c().GC_CONVERT_TO_GFS_FORMAT == GC_TRUE_STRING) {
-                l_tpn_http_message = new T_wdip2gfs_conversion_module().convert_http_message(l_tpn_http_message) as T_tpn_http_message
+                l_tpn_http_message = new T_tpn_conversion_module().convert_http_message(l_tpn_http_message) as T_tpn_http_message
             }
             if (T_middleware_base_6_util.validate_xml(l_tpn_http_message.get_payload(), GC_TRUE)) {
                 I_http_message l_http_response = T_middleware_sender.send_http_request(l_tpn_http_message)

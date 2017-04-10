@@ -1,9 +1,6 @@
 package com.a9ae0b01f0ffc.tpn.conf
 
 import com.a9ae0b01f0ffc.commons.implementation.config.T_common_conf
-import com.a9ae0b01f0ffc.middleware.main.T_middleware_base_4_const
-import com.a9ae0b01f0ffc.tpn.main.T_tpn_base_4_const
-
 
 class T_tpn_conf extends T_common_conf{
 
@@ -26,6 +23,10 @@ class T_tpn_conf extends T_common_conf{
     String GC_CHECK_DUPLICATES
     String GC_CONVERT_TO_GFS_FORMAT
     String GC_SQL_SESSION_REFRESH_INTERVAL_MILLISECONDS
+    String GC_TEMPLATE_NAME_SCHEME
+    String GC_TEMPLATE_NAME_BANK
+    String GC_TPN_EXTERNAL_USERNAME
+    String GC_TPN_EXTERNAL_PASSWORD
 
     T_tpn_conf(String i_conf_file_name) {
         super(i_conf_file_name)
@@ -48,6 +49,10 @@ class T_tpn_conf extends T_common_conf{
         GC_MAX_RETRY_COUNT = GC_CONST_CONF.GC_MAX_RETRY_COUNT(GC_MAX_RETRY_COUNT)
         GC_CONVERT_TO_GFS_FORMAT = GC_CONST_CONF.GC_CONVERT_TO_GFS_FORMAT(GC_CONVERT_TO_GFS_FORMAT)
         GC_SQL_SESSION_REFRESH_INTERVAL_MILLISECONDS = GC_CONST_CONF.GC_SQL_SESSION_REFRESH_INTERVAL_MILLISECONDS(GC_SQL_SESSION_REFRESH_INTERVAL_MILLISECONDS)
+        GC_TEMPLATE_NAME_SCHEME = GC_CONST_CONF.GC_TEMPLATE_NAME_SCHEME(GC_TEMPLATE_NAME_SCHEME)
+        GC_TEMPLATE_NAME_BANK = GC_CONST_CONF.GC_TEMPLATE_NAME_BANK(GC_TEMPLATE_NAME_BANK)
+        GC_TPN_EXTERNAL_USERNAME = GC_CONST_CONF.GC_TPN_EXTERNAL_USERNAME(GC_TPN_EXTERNAL_USERNAME)
+        GC_TPN_EXTERNAL_PASSWORD = GC_CONST_CONF.GC_TPN_EXTERNAL_PASSWORD(GC_TPN_EXTERNAL_PASSWORD)
     }
 
 }

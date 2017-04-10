@@ -23,5 +23,7 @@ class T_tpn_base_4_const extends T_common_base_3_utils{
     public final static String GC_MASTER_TPN_THREAD_NAME_PREFIX = "TPN_MASTER_"
     public final static String GC_WORKER_TPN_THREAD_NAME_PREFIX = "TPN_WORKER_"
     public final static Integer GC_MYSQL_VARCHAR_LIMIT = 3999
+    public final static String GC_UNIQUE_ID_FLAG_RETRY = "1"
+    public final static String GC_UNIQUE_ID_FLAG_NORMAL = "0"
 
 }

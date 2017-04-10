@@ -1,14 +1,14 @@
 package com.a9ae0b01f0ffc.tpn.tests
 
 import com.a9ae0b01f0ffc.black_box.main.T_logging_base_6_util
+import com.a9ae0b01f0ffc.commons.implementation.round_robin.T_round_robin
 import com.a9ae0b01f0ffc.middleware.implementation.T_middleware_sender
-import com.a9ae0b01f0ffc.middleware.main.T_middleware_base_6_util
-import com.a9ae0b01f0ffc.tpn.implementation.T_round_robin
 import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_http_message
-import com.a9ae0b01f0ffc.tpn.implementation.T_wdip2gfs_conversion_module
+import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_conversion_module
 import com.a9ae0b01f0ffc.tpn.main.T_main
 import com.a9ae0b01f0ffc.tpn.main.T_tpn_base_5_context
 import groovy.util.slurpersupport.GPathResult
+import groovy.xml.XmlUtil
 import org.junit.Test
 
 class T_tests_tpn {
@@ -152,7 +152,7 @@ class T_tests_tpn {
         String q = """<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/" xmlns:a="https://wp1.wirecard.com/TransactionNotification/Fleet">
  <soap:Header/>
  <soap:Body>
- <tem:TransactionNotificationRequest1>
+ <tem:TransactionNotificationRequest>
   <a:product>
     <a:productID>1530</a:productID>
     <a:productName>019 - GFS SG Virtual - SGD - 426437</a:productName>
@@ -228,7 +228,32 @@ class T_tests_tpn {
     <a:additionalAmountInt>0</a:additionalAmountInt>
     <a:additionalAmountDec>0</a:additionalAmountDec>
   </a:amounts>
-  <a:fees />
+  <a:fees>
+              <a:fee>
+               <!--Optional:-->
+               <a:feeName>?</a:feeName>
+               <!--Optional:-->
+               <a:feeAmountCurrency>?</a:feeAmountCurrency>
+               <!--Optional:-->
+               <a:feeAmountInt>?</a:feeAmountInt>
+               <!--Optional:-->
+               <a:feeAmountDec>?</a:feeAmountDec>
+               <!--Optional:-->
+               <a:feeTransactionId>?</a:feeTransactionId>
+            </a:fee>
+                        <a:fee>
+               <!--Optional:-->
+               <a:feeName>?</a:feeName>
+               <!--Optional:-->
+               <a:feeAmountCurrency>?</a:feeAmountCurrency>
+               <!--Optional:-->
+               <a:feeAmountInt>?</a:feeAmountInt>
+               <!--Optional:-->
+               <a:feeAmountDec>?</a:feeAmountDec>
+               <!--Optional:-->
+               <a:feeTransactionId>?</a:feeTransactionId>
+            </a:fee>
+  </a:fees>
   <a:pos_merchant>
     <a:acquirerId>0</a:acquirerId>
     <a:acquirerCountry />
@@ -290,15 +315,13 @@ class T_tests_tpn {
     <a:expNonFuelCodeQty08>0</a:expNonFuelCodeQty08>
     <a:expNonFuelCodeCost08>0</a:expNonFuelCodeCost08>
   </a:fleet_125_data>
- </tem:TransactionNotificationRequest1>
+ </tem:TransactionNotificationRequest>
  </soap:Body>
  </soap:Envelope>"""
         //q=T_middleware_base_6_util.strip_namespaces_from_xml(q)
-       // GPathResult z = new XmlSlurper().parseText(q)
-        //System.out.println(z.Body.TransactionNotificationRequest.transaction.transactionTimeStamp.text())
-        a.set_payload(q)
-        System.out.println(new T_wdip2gfs_conversion_module().convert_http_message(a).get_payload())
-        T_logging_base_6_util.l().print_stats()
+        GPathResult z = new XmlSlurper().parseText(q)
+        System.out.println(XmlUtil.serialize(z.Body.TransactionNotificationRequest.fees))
+
     }
 
 }

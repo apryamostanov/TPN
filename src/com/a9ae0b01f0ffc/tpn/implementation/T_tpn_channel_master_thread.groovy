@@ -2,6 +2,7 @@ package com.a9ae0b01f0ffc.tpn.implementation
 
 import com.a9ae0b01f0ffc.black_box.annotations.I_black_box
 import com.a9ae0b01f0ffc.black_box.annotations.I_fix_variable_scopes
+import com.a9ae0b01f0ffc.commons.implementation.round_robin.T_round_robin
 
 import static com.a9ae0b01f0ffc.tpn.main.T_tpn_base_6_util.*
 
@@ -19,7 +20,7 @@ class T_tpn_channel_master_thread extends Thread {
     T_round_robin<T_tpn_channel_worker_thread> p_worker_threads_round_robin_retry = GC_NULL_OBJ_REF as T_round_robin<T_tpn_channel_worker_thread>
     Integer p_last_processed_tpn_id = GC_ZERO
 
-    @I_black_box("error")//orig=
+    @I_black_box("error")
     T_tpn_channel_master_thread(String i_channel_name, String i_url, Integer i_normal_threads_count, Integer i_retry_threads_count, String i_worker_config_file_name_normal, String i_worker_config_file_name_retry, String i_master_config_file_name) {
         this.p_config_file_name = i_master_config_file_name
         this.p_channel_name = i_channel_name
@@ -44,7 +45,7 @@ class T_tpn_channel_master_thread extends Thread {
         p_worker_threads_round_robin_retry = new T_round_robin<T_tpn_channel_worker_thread>(l_channel_worker_threads_retry)
     }
 
-    @I_black_box("error")//orig=
+    @I_black_box("error")
     static Boolean is_not_duplicate(Integer i_trxn_id, Integer i_tpn_internal_unique_id, String i_channel) {
         final String LC_SQL_SELECT_SUCCESSFUL_WITH_SAME_TRXN_ID_AND_DIFFERENT_UNIQUE_ID = """select * from messages where endpoint="$i_channel" and txn_id=$i_trxn_id and tpn_internal_unique_id<>$i_tpn_internal_unique_id and lower(status) in (lower("$GC_STATUS_DELIVERED"), lower("$GC_STATUS_WAITING_FOR_PROCESSING"))"""
         get_sql().eachRow(LC_SQL_SELECT_SUCCESSFUL_WITH_SAME_TRXN_ID_AND_DIFFERENT_UNIQUE_ID) { l_row ->
@@ -54,7 +55,7 @@ class T_tpn_channel_master_thread extends Thread {
         return GC_TRUE
     }
 
-    @I_black_box("error")//orig=
+    @I_black_box("error")
     void run_with_logging() {
         String p_sql_select_main_query
         l().log_info(s.Starting_Master_thread_for_channel_Z1_with_retry_count_Z2, p_channel_name, c().GC_MAX_RETRY_COUNT)
