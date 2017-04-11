@@ -1,0 +1,61 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+   <s:Body>
+      <TranHistNotification xmlns="http://tempuri.org/">
+           <TranHistNotificationRequest xmlns:a="http://schemas.datacontract.org/2004/07/WDNotifyServices.DTO" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+            <a:AvailableBalance>${std_format.availableBalance}</a:AvailableBalance>
+            <a:CurrentBalance>${std_format.currentBalance}</a:CurrentBalance>
+            <a:FilterResultCount>1</a:FilterResultCount>
+            <a:LastCreditAmount>${std_format.lastCreditAmount}</a:LastCreditAmount>
+            <a:LastCreditDate>${std_format.lastCreditDate}</a:LastCreditDate>
+            <a:LastTransactionDate>${std_format.lastTransactionDate}</a:LastTransactionDate>
+            <a:TransactionHistoryList>
+               <a:TransactionsHistory>
+                  <a:AccountNumber>${std_format.AccountNumber}</a:AccountNumber>
+                  <a:BillingCurrencyCode>${std_format.currency_digits(std_format.billingCurrency.padLeft(3, "0"))}</a:BillingCurrencyCode>
+                  <a:CMTTranType>${std_format.logicModule}</a:CMTTranType>
+                  <a:CardAcceptorNameLocation>GFS 8 Marina View, 40-01, Asia Sqaure Tower 1. 018960</a:CardAcceptorNameLocation>
+                  <a:CardMasking>${std_format.cardNumber.replace("X", "*")}</a:CardMasking>
+                  <a:CardNumber4Digits>${std_format.last_chars(std_format.cardNumber, 4)}</a:CardNumber4Digits>
+                  <a:Current_Balance>${std_format.currentBalance}</a:Current_Balance>
+                  <a:CustomAcctID/>
+                  <a:IsDeclined>${std_format.isDeclined}</a:IsDeclined>
+                  <a:MerchantCity>Singapore</a:MerchantCity>
+                  <a:PostTime>${std_format.d2s(std_format.s2d(std_format.transactionPostingDate, "dd-MMM-yyyy"), "yyyy-MM-dd") + "T" + std_format.transactionPostingTime}</a:PostTime>
+                  <a:PostingRef>${(std_format.isDeclined == "No" ? "Approved" : ("Declined - " + std_format.postingReference))}</a:PostingRef>
+                  <a:ProductBin>${std_format.substr(std_format.cardNumber, 0, 6)}</a:ProductBin>
+                  <a:ProxyNumber>${std_format.proxyNumber}</a:ProxyNumber>
+                  <a:SpendCategory>Miscellaneous</a:SpendCategory>
+                  <a:TranId>${std_format.transactionId}</a:TranId>
+                  <a:TranTime>${std_format.d2s(std_format.s2d(std_format.transactionLocalDate, "dd-MMM-yyyy"), "yyyy-MM-dd") + "T" + std_format.transactionLocalTime}</a:TranTime>
+                  <a:TransactionAmount>${std_format.transactionAmountInt + "." + std_format.transactionAmountDec}</a:TransactionAmount>
+                  <a:TransactionCurrencyCode>${std_format.currency_digits(std_format.transactionCurrency.padLeft(3, "0"))}</a:TransactionCurrencyCode>
+                  <a:TransactionDescription>${std_format.transactionDescription}</a:TransactionDescription>
+                  <a:TransactionReason/>
+                  <a:TransactionType>${std_format.transactionType}</a:TransactionType>
+                  <a:TxnSource>${std_format.originalTransactionSource}</a:TxnSource>
+                  <a:TypeOfTran>Tran</a:TypeOfTran>
+                  <a:MCC>5999</a:MCC>
+                  <a:MerchantName>GFS</a:MerchantName>
+                  <a:MerchantCountry>SG</a:MerchantCountry>
+                  <a:MerchantPostalCode/>
+                  <a:MerchantAddress>8 Marina View, 40-01, Asia Sqaure Tower 1. 018960</a:MerchantAddress>
+                  <a:BillingAmount>${std_format.billingAmountInt + "." + std_format.billingAmountDec}</a:BillingAmount>
+                  <a:SettleAmount>${std_format.settleAmount}</a:SettleAmount>
+                  <a:SettleCurrency>${std_format.settleCurrency}</a:SettleCurrency>
+                  <a:TerminalID>GFS</a:TerminalID>
+                  <a:TerminalType>${std_format.terminalType}</a:TerminalType>
+                  <a:TraceNum>${std_format.networkSTAN}</a:TraceNum>
+                  <a:PostedAmount>${std_format.postedAmountInt + "." + std_format.postedAmountDec}</a:PostedAmount>
+                  <a:PostedCurrency>${std_format.currency_digits(std_format.postedCurrency.padLeft(3, "0"))}</a:PostedCurrency>
+                  <a:MerchantId>GFS</a:MerchantId>
+                  <a:RRN>${std_format.networkRRN}</a:RRN>
+                  <a:AcquirerCountry>702</a:AcquirerCountry>
+                  <a:AcquirerID>426437</a:AcquirerID>
+               </a:TransactionsHistory>
+            </a:TransactionHistoryList>
+            <a:UniqueID>${std_format.UniqueID}</a:UniqueID>
+            <a:UniqueIDflag>${std_format.UniqueIDflag}</a:UniqueIDflag>
+         </TranHistNotificationRequest>
+      </TranHistNotification>
+   </s:Body>
+</s:Envelope>
