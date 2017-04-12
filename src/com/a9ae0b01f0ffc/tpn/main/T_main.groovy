@@ -33,6 +33,7 @@ class T_main extends T_tpn_base_6_util {
         init_custom(l_conf_file_name)
         l().log_debug(s.Main_configration_file_name_Z1, l_conf_file_name)
         l().log_info(s.Welcome_to_Wirecard_Transaction_Push_Notification_Service)
+        l().log_info(s.Version_Z1, GC_TPN_VERSION)
         l().log_debug(s.Clearing_unprocessed_notifications_from_previous_run)
         sql_update(LC_SQL_UPDATE_STATUS, GC_STATUS_RENEWED, GC_STATUS_WAITING_FOR_PROCESSING)
         GPathResult p_conf = (GPathResult) new XmlSlurper().parse(c().GC_THREAD_CONFIG_FILE_NAME)

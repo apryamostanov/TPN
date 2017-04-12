@@ -55,12 +55,12 @@ class T_tpn_channel_worker_thread extends Thread {
         run_with_logging()
     }
 
-    @I_black_box("error")//orig=
+    @I_black_box("error")
     void process_message(T_tpn_http_message i_tpn_http_message) {
         try {
             T_middleware_sender.set_soft(GC_TRUE)
             T_tpn_http_message l_tpn_http_message = i_tpn_http_message
-            if (c().GC_CONVERT_TO_GFS_FORMAT == GC_TRUE_STRING) {
+            if (c().GC_USE_CONVERSION_TEMPLATES == GC_TRUE_STRING) {
                 l_tpn_http_message = new T_tpn_conversion_module().convert_http_message(l_tpn_http_message) as T_tpn_http_message
             }
             if (T_middleware_base_6_util.validate_xml(l_tpn_http_message.get_payload(), GC_TRUE)) {

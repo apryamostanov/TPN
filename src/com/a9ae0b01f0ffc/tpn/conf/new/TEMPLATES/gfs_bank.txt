@@ -13,7 +13,7 @@
                   <a:AccountNumber>${std_format.AccountNumber}</a:AccountNumber>
                   <a:BillingCurrencyCode>${std_format.currency_digits(std_format.billingCurrency.padLeft(3, "0"))}</a:BillingCurrencyCode>
                   <a:CMTTranType>${std_format.logicModule}</a:CMTTranType>
-                  <a:CardAcceptorNameLocation>GFS 8 Marina View, 40-01, Asia Sqaure Tower 1. 018960</a:CardAcceptorNameLocation>
+                  <a:CardAcceptorNameLocation>GFS 8 Marina View, 40-01, Asia Square Tower 1. 018960</a:CardAcceptorNameLocation>
                   <a:CardMasking>${std_format.cardNumber.replace("X", "*")}</a:CardMasking>
                   <a:CardNumber4Digits>${std_format.last_chars(std_format.cardNumber, 4)}</a:CardNumber4Digits>
                   <a:Current_Balance>${std_format.currentBalance}</a:Current_Balance>
