@@ -2,7 +2,7 @@ package com.a9ae0b01f0ffc.tpn.main
 
 import com.a9ae0b01f0ffc.black_box.main.T_logging_base_5_context
 import com.a9ae0b01f0ffc.black_box.main.T_logging_base_6_util
-import com.a9ae0b01f0ffc.middleware.main.T_middleware_base_5_context
+import com.a9ae0b01f0ffc.middleware.main.T_middleware_base_5_app_context
 import com.a9ae0b01f0ffc.tpn.conf.T_tpn_conf
 import groovy.sql.Sql
 import groovy.text.SimpleTemplateEngine
@@ -20,7 +20,8 @@ class T_tpn_base_5_context extends T_tpn_base_4_const {
     static void init_custom(String i_commons_conf_file_name) {
         get_context().p_commons = new T_tpn_conf(i_commons_conf_file_name)
         T_logging_base_5_context.init_custom(c().GC_BLACK_BOX_CONFIG)
-        T_middleware_base_5_context.init_custom(i_commons_conf_file_name)
+        T_middleware_base_5_app_context l_middleware_base_5_app_context = new T_middleware_base_5_app_context()
+        l_middleware_base_5_app_context.init_app_context(i_commons_conf_file_name)
         init_sql()
         init_templates()
     }

@@ -3,8 +3,9 @@ package com.a9ae0b01f0ffc.tpn.implementation
 import com.a9ae0b01f0ffc.black_box.annotations.I_black_box
 import com.a9ae0b01f0ffc.black_box.annotations.I_fix_variable_scopes
 import com.a9ae0b01f0ffc.middleware.Interfaces.I_http_message
-import com.a9ae0b01f0ffc.middleware.implementation.T_middleware_sender
+import com.a9ae0b01f0ffc.middleware.implementation.T_http_sender
 import com.a9ae0b01f0ffc.middleware.main.T_middleware_base_6_util
+import com.a9ae0b01f0ffc.tpn.main.T_tpn_base_6_util
 
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -58,13 +59,14 @@ class T_tpn_channel_worker_thread extends Thread {
     @I_black_box("error")
     void process_message(T_tpn_http_message i_tpn_http_message) {
         try {
-            T_middleware_sender.set_soft(GC_TRUE)
+            i_tpn_http_message.set_tpn_standard_message_format(parse_payload(i_tpn_http_message.get_payload()))
+            T_http_sender.set_soft(GC_TRUE)
             T_tpn_http_message l_tpn_http_message = i_tpn_http_message
             if (c().GC_USE_CONVERSION_TEMPLATES == GC_TRUE_STRING) {
                 l_tpn_http_message = new T_tpn_conversion_module().convert_http_message(l_tpn_http_message) as T_tpn_http_message
             }
             if (T_middleware_base_6_util.validate_xml(l_tpn_http_message.get_payload(), GC_TRUE)) {
-                I_http_message l_http_response = T_middleware_sender.send_http_request(l_tpn_http_message)
+                I_http_message l_http_response = T_http_sender.send_http_request(l_tpn_http_message)
                 Integer l_response_code = l_http_response.get_status()
                 if (l_response_code == GC_HTTP_RESP_CODE_OK) {
                     sql_update(PC_SQL_UPDATE_SUCCESS, GC_STATUS_DELIVERED, substr(l_http_response.toString(), GC_FIRST_CHAR, GC_MYSQL_VARCHAR_LIMIT), p_thread_number, l_tpn_http_message.p_tpn_internal_unique_id)

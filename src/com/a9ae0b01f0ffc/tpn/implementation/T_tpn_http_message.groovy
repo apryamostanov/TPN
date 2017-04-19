@@ -40,7 +40,6 @@ class T_tpn_http_message extends T_http_message {
         set_trxn_id(Integer.parseInt(i_row.txn_id)) //this is varchar in mysql currently
         set_source(i_row.source)
         set_payload(i_row.payload)
-        set_tpn_standard_message_format(T_tpn_base_6_util.parse_payload(get_payload()))
         set_channel_name(i_row.endpoint)
         set_uri(i_url)
         set_retry_count(i_row.retry_count)
