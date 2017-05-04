@@ -69,9 +69,16 @@ class T_tpn_channel_master_thread extends Thread {
         while (GC_TRUE) {
             final String LC_SQL_UPDATE_STATUS = """update messages set status=? where tpn_internal_unique_id=?"""
             if (GC_ZERO == Integer.parseInt(c().GC_MAX_RETRY_COUNT)) {
-                p_sql_select_main_query = """select * from messages where lower(status) in (lower("$GC_STATUS_NEW"), lower("$GC_STATUS_RENEWED"), lower("$GC_STATUS_FAILED_NO_CONNECTION"), lower("$GC_STATUS_FAILED_RESPONSE")) and endpoint="$p_channel_name" and tpn_internal_unique_id > $p_last_processed_tpn_id order by tpn_internal_unique_id asc"""
+                p_sql_select_main_query = """select * from messages where
+                                            endpoint="$p_channel_name" and tpn_internal_unique_id > $p_last_processed_tpn_id and
+                                            lower(status) in ("$GC_STATUS_NEW", "$GC_STATUS_RENEWED", "$GC_STATUS_FAILED_NO_CONNECTION", "$GC_STATUS_FAILED_RESPONSE")
+                                            order by tpn_internal_unique_id asc"""
             } else {
-                p_sql_select_main_query = """select * from messages where lower(status) in (lower("$GC_STATUS_NEW"), lower("$GC_STATUS_RENEWED"), lower("$GC_STATUS_FAILED_NO_CONNECTION"), lower("$GC_STATUS_FAILED_RESPONSE")) and endpoint="$p_channel_name" and ifnull(retry_count,0)<= ${c().GC_MAX_RETRY_COUNT} order by tpn_internal_unique_id asc"""
+                p_sql_select_main_query = """select * from messages where endpoint="$p_channel_name" and (lower(status) in ("$GC_STATUS_NEW", "$GC_STATUS_RENEWED") or
+                                            (lower(status) in ("$GC_STATUS_FAILED_NO_CONNECTION", "$GC_STATUS_FAILED_RESPONSE") and
+                                            ifnull(retry_count,0)<= ${c().GC_MAX_RETRY_COUNT} and
+                                            ifnull(send_time,now()) <= date_sub(now(), INTERVAL ${c().GC_RESEND_INTERVAL_SECONDS} SECOND)))
+                                            order by tpn_internal_unique_id asc"""
             }
             get_sql().eachRow(p_sql_select_main_query) { l_row ->
                 l().log_receive_sql(l_row)
