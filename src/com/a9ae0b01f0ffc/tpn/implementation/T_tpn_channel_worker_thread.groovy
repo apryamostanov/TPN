@@ -81,7 +81,7 @@ class T_tpn_channel_worker_thread extends Thread {
                     sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_INVALID_RESPONSE, substr(l_http_response.toString(), GC_FIRST_CHAR, GC_MYSQL_VARCHAR_LIMIT), p_thread_number, l_tpn_http_message.p_tpn_internal_unique_id)
                 } else {
                     l().log_warning(s.Unsuccessful_HTTP_Response_Code_Z1_for_message_TPN_ID_Z2_CoreCard_ID_Z3, l_response_code, l_tpn_http_message.p_tpn_internal_unique_id, l_tpn_http_message.p_trxn_id)
-                    sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_RESPONSE, substr(l_http_response.toString(), GC_FIRST_CHAR, GC_MYSQL_VARCHAR_LIMIT), p_thread_number, l_tpn_http_message.p_tpn_internal_unique_id)
+                    sql_update(PC_SQL_UPDATE_FAIL, GC_STATUS_FAILED_RESPONSE/*todo: change to "unknown"*/, substr(l_http_response.toString(), GC_FIRST_CHAR, GC_MYSQL_VARCHAR_LIMIT), p_thread_number, l_tpn_http_message.p_tpn_internal_unique_id)
                 }
             } else {
                 l().log_warning(s.Invalid_Request_for_message_TPN_ID_Z1_CoreCard_ID_Z2, i_tpn_http_message.p_tpn_internal_unique_id, i_tpn_http_message.p_trxn_id)

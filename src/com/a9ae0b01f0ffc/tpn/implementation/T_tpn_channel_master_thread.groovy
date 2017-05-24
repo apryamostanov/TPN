@@ -71,7 +71,7 @@ class T_tpn_channel_master_thread extends Thread {
             if (GC_ZERO == Integer.parseInt(c().GC_MAX_RETRY_COUNT)) {
                 p_sql_select_main_query = """select * from messages where
                                             endpoint="$p_channel_name" and tpn_internal_unique_id > $p_last_processed_tpn_id and
-                                            lower(status) in ("$GC_STATUS_NEW", "$GC_STATUS_RENEWED", "$GC_STATUS_FAILED_NO_CONNECTION", "$GC_STATUS_FAILED_RESPONSE")
+                                            lower(status) in ("$GC_STATUS_NEW", "$GC_STATUS_RENEWED", "$GC_STATUS_FAILED_NO_CONNECTION", "$GC_STATUS_FAILED_RESPONSE") /*todo: new/renewed only*/
                                             order by tpn_internal_unique_id asc"""
             } else {
                 p_sql_select_main_query = """select * from messages where endpoint="$p_channel_name" and (lower(status) in ("$GC_STATUS_NEW", "$GC_STATUS_RENEWED") or
@@ -89,7 +89,7 @@ class T_tpn_channel_master_thread extends Thread {
                         p_last_processed_tpn_id = l_row.tpn_internal_unique_id
                     }
                     T_tpn_channel_worker_thread l_next_thread
-                    if ([GC_STATUS_NEW, GC_STATUS_RENEWED].contains(l_message.get_state())) {
+                    if ([GC_STATUS_NEW, GC_STATUS_RENEWED].contains(l_message.get_state().toLowerCase())) {
                         l_next_thread = ++p_worker_threads_round_robin_normal.iterator()
                     } else {
                         l_next_thread = ++p_worker_threads_round_robin_retry.iterator()
