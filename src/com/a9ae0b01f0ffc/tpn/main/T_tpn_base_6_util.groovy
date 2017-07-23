@@ -142,6 +142,7 @@ class T_tpn_base_6_util extends T_tpn_base_5_context {
         if ((System.currentTimeMillis() - get_context().p_sql_last_init_time_millis) >= new Long(c().GC_SQL_SESSION_REFRESH_INTERVAL_MILLISECONDS)) {
             init_sql()
         }
+        //TODO: healthcheck here with handling of CommunicationsException
         return get_context().p_sql
     }
 
