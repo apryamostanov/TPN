@@ -100,6 +100,7 @@ class T_tpn_standard_message_format extends T_tpn_base_6_util {
     String chipTransactionFlag = GC_EMPTY_STRING
     String paymentIndicator = GC_EMPTY_STRING
     String cardholderId = GC_EMPTY_STRING
+    //\/\/\/additionalData
     String availableBalance = GC_EMPTY_STRING
     String currentBalance = GC_EMPTY_STRING
     String lastCreditAmount = GC_EMPTY_STRING
@@ -109,6 +110,7 @@ class T_tpn_standard_message_format extends T_tpn_base_6_util {
     String transactionType = GC_EMPTY_STRING
     String settleAmount = GC_EMPTY_STRING
     String settleCurrency = GC_EMPTY_STRING
+    ///\/\/\additionalData
     String fees_xml = GC_EMPTY_STRING
 
 }

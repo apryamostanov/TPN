@@ -4,7 +4,7 @@ import com.a9ae0b01f0ffc.commons.implementation.main.T_common_base_3_utils
 
 class T_tpn_base_4_const extends T_common_base_3_utils{
 
-    public final static String GC_TPN_VERSION = "1.0.0"
+    public final static String GC_TPN_VERSION = "x.x.2"
     public final static String GC_MODE_NORMAL = "normal"
     public final static String GC_MODE_RETRY = "retry"
     public final static String GC_STATUS_NEW = "new"
@@ -17,6 +17,8 @@ class T_tpn_base_4_const extends T_common_base_3_utils{
     public final static String GC_STATUS_WAITING_FOR_PROCESSING = "waiting"
     public final static String GC_STATUS_DUPLICATE = "duplicate"
     public final static String GC_STATUS_RENEWED = "renewed"
+    public final static String GC_STATUS_SENDING = "sending"
+    public final static String GC_STATUS_OBSOLETE = "obsolete"
     public final static Integer GC_RESPONSE_CODE_INVALID_RESPONSE = -1
     public final static Integer GC_RESPONSE_CODE_INVALID_REQUEST = -2
     public final static Integer GC_RESPONSE_CODE_CONNECTION_REFUSED = -3
@@ -26,5 +28,6 @@ class T_tpn_base_4_const extends T_common_base_3_utils{
     public final static Integer GC_MYSQL_VARCHAR_LIMIT = 3999
     public final static String GC_UNIQUE_ID_FLAG_RETRY = "1"
     public final static String GC_UNIQUE_ID_FLAG_NORMAL = "0"
+    public final static Long GC_SQL_RECONNECT_RETRY_PERIOD_MILLISECONDS = 60000
 
 }

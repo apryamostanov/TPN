@@ -34,7 +34,7 @@ class T_tpn_http_message extends T_http_message {
 
     @I_black_box("error")
     T_tpn_http_message(Object i_row, String i_url) {
-        set_trxn_id(Integer.parseInt(i_row.txn_id)) //this is varchar in mysql currently
+        set_trxn_id(Integer.parseInt(i_row.txn_id)) //this is serialize_for_db in mysql currently
         set_source(i_row.source)
         set_payload(i_row.payload)
         set_channel_name(i_row.endpoint)
@@ -51,12 +51,6 @@ class T_tpn_http_message extends T_http_message {
     @I_black_box("error")
     T_tpn_http_message(String i_xml) {
         p_payload = i_xml
-    }
-
-    @I_black_box("error")
-    @Override
-    String get_payload_type() {
-        return T_tpn_base_6_util.c().GC_PAYLOAD_TYPE
     }
 
     @I_black_box("error")

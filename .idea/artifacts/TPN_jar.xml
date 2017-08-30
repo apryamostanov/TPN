@@ -51,6 +51,7 @@
       <element id="extracted-dir" path="C:/AP/dist/apache-groovy-binary-2.4.9/groovy-2.4.9/lib/xmlpull-1.1.3.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="C:/AP/dist/apache-groovy-binary-2.4.9/groovy-2.4.9/lib/xstream-1.4.7.jar" path-in-jar="/" />
       <element id="extracted-dir" path="C:/Gradle/bin/runtime/jackson-databind-2.8.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/AP/dist/JSON-java.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

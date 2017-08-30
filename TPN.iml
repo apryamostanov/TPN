@@ -28,6 +28,15 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
+          <root url="jar://C:/AP/dist/JSON-java.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
           <root url="jar://$MODULE_DIR$/../Middleware/out/artifacts/Middleware_jar2/Middleware_redist.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -80,5 +89,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

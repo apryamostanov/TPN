@@ -4,28 +4,52 @@ import com.a9ae0b01f0ffc.black_box.annotations.I_black_box
 import com.a9ae0b01f0ffc.black_box.annotations.I_fix_variable_scopes
 import com.a9ae0b01f0ffc.black_box.implementation.T_logger
 import com.a9ae0b01f0ffc.black_box.main.T_logging_base_5_context
+import com.a9ae0b01f0ffc.middleware.Interfaces.I_http_message
+import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_http_message
 import com.a9ae0b01f0ffc.tpn.implementation.T_tpn_standard_message_format
+import com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException
+import groovy.sql.GroovyRowResult
 import groovy.sql.Sql
 import groovy.util.slurpersupport.GPathResult
+
+import java.sql.SQLException
+import java.sql.SQLRecoverableException
 
 @I_fix_variable_scopes
 class T_tpn_base_6_util extends T_tpn_base_5_context {
 
     @I_black_box("error")
-    static void sql_update(String i_sql_string, Object... i_bind_variables = GC_SKIPPED_ARGS) {
-        l().log_send_sql("update", i_sql_string, i_bind_variables)
-        if (method_arguments_present(i_bind_variables)) {
-            get_sql().executeUpdate(i_sql_string, i_bind_variables)
-        } else {
-            get_sql().executeUpdate(i_sql_string)
+    static void sql_update(String i_sql_string, Object[] i_bind_variables = GC_SKIPPED_ARGS) {
+        try {
+            l().log_send_sql("update", i_sql_string, i_bind_variables)
+            if (method_arguments_present(i_bind_variables)) {
+                get_sql().executeUpdate(i_sql_string, i_bind_variables)
+            } else {
+                get_sql().executeUpdate(i_sql_string)
+            }
+            l().log_receive_sql("updated", get_sql().getUpdateCount())
+            commit()
+        } catch (SQLRecoverableException e_others) {
+            l().log_warning(s.MySQL_connection_lost_Z1_Z2, e_others.getClass().getSimpleName(), e_others.getMessage())
+            while (not(reconnect())) {
+                sleep(GC_SQL_RECONNECT_RETRY_PERIOD_MILLISECONDS)
+            }
+            l().log_warning(s.MySQL_connectivity_restored)
+            sql_update(i_sql_string, i_bind_variables)
+        } catch (MySQLNonTransientConnectionException e_others) {
+            l().log_warning(s.MySQL_connection_lost_Z1_Z2, e_others.getClass().getSimpleName(), e_others.getMessage())
+            while (not(reconnect())) {
+                sleep(GC_SQL_RECONNECT_RETRY_PERIOD_MILLISECONDS)
+            }
+            l().log_warning(s.MySQL_connectivity_restored)
+            sql_update(i_sql_string, i_bind_variables)
         }
-        l().log_receive_sql("updated", get_sql().getUpdateCount())
     }
 
     @I_black_box("error")
-    static T_tpn_standard_message_format parse_payload(String i_payload) {
+    static T_tpn_standard_message_format parse_payload(T_tpn_http_message i_http_message) {
         T_tpn_standard_message_format l_tpn_standard_message_format = new T_tpn_standard_message_format()
-        GPathResult l_gpath_result = new XmlSlurper().parseText(i_payload)
+        GPathResult l_gpath_result = new XmlSlurper().parseText(i_http_message.get_payload())
         l_tpn_standard_message_format.productID = l_gpath_result?.Body?.TransactionNotificationRequest?.product?.productID?.text()
         l_tpn_standard_message_format.productName = l_gpath_result?.Body?.TransactionNotificationRequest?.product?.productName?.text()
         l_tpn_standard_message_format.programManager = l_gpath_result?.Body?.TransactionNotificationRequest?.product?.programManager?.text()
@@ -131,10 +155,63 @@ class T_tpn_base_6_util extends T_tpn_base_5_context {
     }
 
     @I_black_box("error")
+    static void inject_header(T_tpn_http_message i_http_message) {
+        Node l_parsed_xml = new XmlParser().parseText(i_http_message.get_payload())
+        Node l_soap_body_node = (Node) l_parsed_xml.children().get(GC_SECOND_INDEX)
+        Node l_payload_node = (Node) l_soap_body_node.children().get(GC_FIRST_INDEX)
+        Node l_header_node = new Node(l_payload_node, "a:header", ["xmlns:a": "https://wp1.wirecard.com/TransactionNotification/Fleet"])
+        Node l_username_node = new Node(l_header_node, "a:UserName")
+        Node l_password_node = new Node(l_header_node, "a:Password")
+        Node l_unique_id_node = new Node(l_header_node, "a:UniqueID")
+        Node l_unique_id_flag_node = new Node(l_header_node, "a:UniqueIDFlag")
+        l_username_node.setValue(c().GC_TPN_EXTERNAL_USERNAME)
+        l_password_node.setValue(c().GC_TPN_EXTERNAL_PASSWORD)
+        l_unique_id_node.setValue(i_http_message.get_tpn_internal_unique_id())
+        if (nvl(i_http_message.get_retry_count(), GC_ZERO) > GC_ONE_ONLY) {
+            l_unique_id_flag_node.setValue(GC_UNIQUE_ID_FLAG_RETRY)
+        } else {
+            l_unique_id_flag_node.setValue(GC_UNIQUE_ID_FLAG_NORMAL)
+        }
+
+        l_payload_node.children().remove(l_header_node)
+        l_payload_node.children().add(GC_FIRST_INDEX, l_header_node)
+        StringWriter l_new_payload = new StringWriter()
+        XmlNodePrinter l_xml_node_printer = new XmlNodePrinter(new PrintWriter(l_new_payload))
+        l_xml_node_printer.with {
+            preserveWhitespace = true
+            expandEmptyElements = true
+            expandEmptyElements = false
+        }
+        l_xml_node_printer.print(l_parsed_xml)
+        i_http_message.set_payload(l_new_payload.toString())
+    }
+
+    @I_black_box("error")
+    static String serialize_for_db(I_http_message l_http_response) {
+        return substr(l_http_response.toString(), GC_FIRST_CHAR, GC_MYSQL_VARCHAR_LIMIT)
+    }
+
+    @I_black_box("error")
     static void commit() {
-        l().log_send_sql("commit")
-        get_sql().commit()
-        l().log_receive_sql("commit_finished")
+        try {
+            l().log_send_sql("commit")
+            get_sql().commit()
+            l().log_receive_sql("commit_finished")
+        } catch (SQLRecoverableException e_others) {
+            l().log_warning(s.MySQL_connection_lost_Z1_Z2, e_others.getClass().getSimpleName(), e_others.getMessage())
+            while (not(reconnect())) {
+                sleep(GC_SQL_RECONNECT_RETRY_PERIOD_MILLISECONDS)
+            }
+            l().log_warning(s.MySQL_connectivity_restored)
+            commit()
+        } catch (MySQLNonTransientConnectionException e_others) {
+            l().log_warning(s.MySQL_connection_lost_Z1_Z2, e_others.getClass().getSimpleName(), e_others.getMessage())
+            while (not(reconnect())) {
+                sleep(GC_SQL_RECONNECT_RETRY_PERIOD_MILLISECONDS)
+            }
+            l().log_warning(s.MySQL_connectivity_restored)
+            commit()
+        }
     }
 
     @I_black_box("error")
@@ -142,8 +219,71 @@ class T_tpn_base_6_util extends T_tpn_base_5_context {
         if ((System.currentTimeMillis() - get_context().p_sql_last_init_time_millis) >= new Long(c().GC_SQL_SESSION_REFRESH_INTERVAL_MILLISECONDS)) {
             init_sql()
         }
-        //TODO: healthcheck here with handling of CommunicationsException
         return get_context().p_sql
+    }
+
+    @I_black_box("error")
+    static void each_row(String i_sql, Closure i_closure) throws SQLException {
+        try {
+            get_sql().eachRow(i_sql, i_closure)
+        } catch (SQLRecoverableException e_others) {
+            l().log_warning(s.MySQL_healthcheck_failed, e_others)
+            while (not(reconnect())) {
+                sleep(GC_SQL_RECONNECT_RETRY_PERIOD_MILLISECONDS)
+            }
+            l().log_warning(s.MySQL_connectivity_restored)
+            each_row(i_sql, i_closure)
+        } catch (MySQLNonTransientConnectionException e_others) {
+            l().log_warning(s.MySQL_connection_lost_Z1_Z2, e_others.getClass().getSimpleName(), e_others.getMessage())
+            while (not(reconnect())) {
+                sleep(GC_SQL_RECONNECT_RETRY_PERIOD_MILLISECONDS)
+            }
+            l().log_warning(s.MySQL_connectivity_restored)
+            each_row(i_sql, i_closure)
+        }
+    }
+
+    @I_black_box("error")
+    static GroovyRowResult first_row(String i_sql) throws SQLException {
+        try {
+            return get_sql().firstRow(i_sql)
+        } catch (SQLRecoverableException e_others) {
+            l().log_warning(s.MySQL_connection_lost_Z1_Z2, e_others.getClass().getSimpleName(), e_others.getMessage())
+            while (not(reconnect())) {
+                sleep(GC_SQL_RECONNECT_RETRY_PERIOD_MILLISECONDS)
+            }
+            l().log_warning(s.MySQL_connectivity_restored)
+            return first_row(i_sql)
+        } catch (MySQLNonTransientConnectionException e_others) {
+            l().log_warning(s.MySQL_connection_lost_Z1_Z2, e_others.getClass().getSimpleName(), e_others.getMessage())
+            while (not(reconnect())) {
+                sleep(GC_SQL_RECONNECT_RETRY_PERIOD_MILLISECONDS)
+            }
+            l().log_warning(s.MySQL_connectivity_restored)
+            return first_row(i_sql)
+        }
+    }
+
+    private static Boolean reconnect() {
+        Integer LC_IS_OK_TRUE = 1
+        String l_healthcheck_sql = """select 1 as is_ok"""
+        try {
+            l().log_warning(s.Trying_to_reconnect)
+            init_sql()
+            get_context().p_sql.eachRow(l_healthcheck_sql) { l_healthcheck_row ->
+                if (l_healthcheck_row.is_ok != LC_IS_OK_TRUE) {
+                    l().log_warning(s.Unexpected_healthcheck_result_Z1, l_healthcheck_row.is_ok)
+                    return GC_FALSE
+                }
+            }
+        } catch (SQLRecoverableException e_others) {
+            l().log_warning(s.Exception_during_MySQL_reconnect_Z1_Z2, e_others.getClass().getSimpleName(), e_others.getMessage())
+            return GC_FALSE
+        } catch (MySQLNonTransientConnectionException e_others) {
+            l().log_warning(s.Exception_during_MySQL_reconnect_Z1_Z2, e_others.getClass().getSimpleName(), e_others.getMessage())
+            return GC_FALSE
+        }
+        return GC_TRUE
     }
 
     @I_black_box("error")

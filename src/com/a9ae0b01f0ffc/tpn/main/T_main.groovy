@@ -9,7 +9,7 @@ import groovy.util.slurpersupport.GPathResult
 @I_fix_variable_scopes
 class T_main extends T_tpn_base_6_util {
 
-    @I_black_box("error")//orig=
+    @I_black_box("error")
     private static void spawn_thread(GPathResult i_thread_xml) {
         T_tpn_channel_master_thread l_tpn_thread = new T_tpn_channel_master_thread(
                 i_thread_xml.@channel_name.text()
