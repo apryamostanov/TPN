@@ -33,6 +33,11 @@ class T_tpn_http_message extends T_http_message {
     }
 
     @I_black_box("error")
+    T_tpn_http_message() {
+
+    }
+
+    @I_black_box("error")
     T_tpn_http_message(Object i_row, String i_url) {
         set_trxn_id(Integer.parseInt(i_row.txn_id)) //this is serialize_for_db in mysql currently
         set_source(i_row.source)
