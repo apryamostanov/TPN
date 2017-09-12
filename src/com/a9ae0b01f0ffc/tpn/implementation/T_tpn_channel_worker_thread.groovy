@@ -97,7 +97,8 @@ class T_tpn_channel_worker_thread extends Thread {
                 } else if (c().GC_PAYLOAD_TYPE == T_middleware_base_4_const.GC_PAYLOAD_TYPE_JSON) {
                     HashMap<String, I_http_message> l_messages_map = new HashMap<String, I_http_message>()
                     l_messages_map.put(c().GC_TPN_SERVICE_NAME, i_tpn_standard_xml_http_message)
-                    l_tpn_http_message_to_send.set_payload(new T_soap2rest_automated_converter().convert_http_messages(l_messages_map, c().GC_TPN_SERVICE_NAME).get_payload())
+                    l_tpn_http_message_to_send.setP_payload_json(new T_soap2rest_automated_converter().convert_http_messages(l_messages_map, c().GC_TPN_SERVICE_NAME).get_payload())
+                    l_tpn_http_message_to_send.set_payload(l_tpn_http_message_to_send.get_payload_json())
                 }
                 sql_update(PC_SQL_UPDATE_SENDING, GC_STATUS_SENDING, p_thread_number, l_tpn_http_message_to_send.p_tpn_internal_unique_id)
                 l().log_info(s.Sending_message_Z1, l_tpn_http_message_to_send.get_tpn_internal_unique_id())
