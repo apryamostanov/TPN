@@ -4,7 +4,7 @@ import com.a9ae0b01f0ffc.commons.implementation.main.T_common_base_3_utils
 
 class T_tpn_base_4_const extends T_common_base_3_utils{
 
-    public final static String GC_TPN_VERSION = "x.x.3"
+    public final static String GC_TPN_VERSION = "x.x.4"
     public final static String GC_MODE_NORMAL = "normal"
     public final static String GC_MODE_RETRY = "retry"
     public final static String GC_STATUS_NEW = "new"

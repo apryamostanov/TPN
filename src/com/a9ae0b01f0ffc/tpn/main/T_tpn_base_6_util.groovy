@@ -159,7 +159,7 @@ class T_tpn_base_6_util extends T_tpn_base_5_context {
         Node l_parsed_xml = new XmlParser().parseText(i_http_message.get_payload())
         Node l_soap_body_node = (Node) l_parsed_xml.children().get(GC_SECOND_INDEX)
         Node l_payload_node = (Node) l_soap_body_node.children().get(GC_FIRST_INDEX)
-        Node l_header_node = new Node(l_payload_node, "a:header", ["xmlns:a": "https://wp1.wirecard.com/TransactionNotification/Fleet"])
+        Node l_header_node = new Node(l_payload_node, "header", ["xmlns:a": "https://wp1.wirecard.com/TransactionNotification/Fleet"])
         Node l_username_node = new Node(l_header_node, "a:UserName")
         Node l_password_node = new Node(l_header_node, "a:Password")
         Node l_unique_id_node = new Node(l_header_node, "a:UniqueID")
